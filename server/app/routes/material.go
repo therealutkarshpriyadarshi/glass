@@ -17,9 +17,17 @@ func SetupMaterialRoutes(r gin.IRouter, db *gorm.DB, storage *firebase.CloudStor
 	router := r.Group("/materials")
 	router.Use(middlewares.AuthMiddleware(secret))
 	{
+		// Public (authenticated) endpoints
 		router.GET("/:id", handler.GetMaterial)
-		router.POST("/", handler.CreateMaterial)
-		router.PUT("/:id", handler.UpdateMaterial)
-		router.DELETE("/:id", handler.DeleteMaterial)
+		router.POST("/", handler.CreateMaterial) // Note: Should ideally check course ownership
+		router.GET("/course/:courseId", handler.GetMaterialsByCourse)
+
+		// Protected endpoints - require material ownership (teacher/admin of the course)
+		router.PUT("/:id",
+			middlewares.MaterialOwnershipMiddleware(db),
+			handler.UpdateMaterial)
+		router.DELETE("/:id",
+			middlewares.MaterialOwnershipMiddleware(db),
+			handler.DeleteMaterial)
 	}
 }

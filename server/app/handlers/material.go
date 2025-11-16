@@ -157,3 +157,26 @@ func (h *MaterialHandler) UpdateMaterial(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"material": *material})
 }
+
+// GetMaterialsByCourse retrieves all materials associated with a specific course.
+//
+// Parameters:
+//   - c: The Gin context for the current request.
+//
+// The function expects a course ID as a URL parameter.
+// It returns a list of materials as JSON if successful, or an appropriate error response.
+func (h *MaterialHandler) GetMaterialsByCourse(c *gin.Context) {
+	courseID, err := strconv.ParseUint(c.Param("courseId"), 10, 64)
+	if err != nil {
+		HandleBadRequest(c, "Invalid course ID")
+		return
+	}
+
+	materials, err := h.serv.GetMaterialsByCourse(uint(courseID))
+	if err != nil {
+		SendError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"materials": materials})
+}

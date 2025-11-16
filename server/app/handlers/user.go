@@ -149,3 +149,27 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 
 	HandleOk(c, "Password changed successfully")
 }
+
+// GetEnrolledCourses retrieves all courses the authenticated user is enrolled in
+func (h *UserHandler) GetEnrolledCourses(c *gin.Context) {
+	userID := GetUserID(c)
+	courses, err := h.serv.GetEnrolledCourses(userID)
+	if err != nil {
+		SendError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"courses": courses})
+}
+
+// GetCreatedCourses retrieves all courses created by the authenticated user
+func (h *UserHandler) GetCreatedCourses(c *gin.Context) {
+	userID := GetUserID(c)
+	courses, err := h.serv.GetCreatedCourses(userID)
+	if err != nil {
+		SendError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"courses": courses})
+}

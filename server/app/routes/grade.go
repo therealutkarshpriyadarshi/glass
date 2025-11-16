@@ -15,11 +15,23 @@ func SetupGradeRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	grades := r.Group("/grades")
 	grades.Use(middlewares.AuthMiddleware(secret))
 	{
-		grades.POST("/", gradeHandler.Create)
+		// Public (authenticated) endpoints
 		grades.GET("/:gradeId", gradeHandler.GetGrade)
-		grades.PUT("/:gradeId", gradeHandler.UpdateGrade)
-		grades.GET("/assignment/:assignmentId", gradeHandler.GetGradesForAssignment)
 		grades.GET("/user/:userId", gradeHandler.GradesForUser)
-		grades.GET("/statistics/:assignmentId", gradeHandler.GradeStats)
+
+		// Protected endpoints - require grade ownership (teacher/admin of the course)
+		grades.POST("/",
+			gradeHandler.Create) // Note: Authorization checked in handler
+		grades.PUT("/:gradeId",
+			middlewares.GradeOwnershipMiddleware(db),
+			gradeHandler.UpdateGrade)
+
+		// Assignment-based endpoints - require assignment ownership
+		grades.GET("/assignment/:assignmentId",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			gradeHandler.GetGradesForAssignment)
+		grades.GET("/statistics/:assignmentId",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			gradeHandler.GradeStats)
 	}
 }

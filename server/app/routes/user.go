@@ -34,5 +34,13 @@ func SetUpUserRoutes(r gin.IRouter, db *gorm.DB, secret []byte, expiration time.
 		router.DELETE("/profile",
 			middlewares.AuthMiddleware(secretString),
 			handler.DeleteUser)
+
+		// Course-related endpoints
+		router.GET("/courses",
+			middlewares.AuthMiddleware(secretString),
+			handler.GetEnrolledCourses)
+		router.GET("/created-courses",
+			middlewares.AuthMiddleware(secretString),
+			handler.GetCreatedCourses)
 	}
 }

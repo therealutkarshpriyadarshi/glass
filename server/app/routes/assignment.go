@@ -15,15 +15,28 @@ func SetupAssignmentRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	assignments := r.Group("/assignments")
 	assignments.Use(middlewares.AuthMiddleware(secret))
 	{
-		assignments.POST("/", assignmentHandler.Create)
+		// Public (authenticated) endpoints
+		assignments.POST("/", assignmentHandler.Create) // Note: Should ideally check course ownership
 		assignments.GET("/:id", assignmentHandler.Get)
-		assignments.PUT("/:id", assignmentHandler.UpdateAssignment)
-		assignments.DELETE("/:id", assignmentHandler.Delete)
 		assignments.GET("/course/:courseId", assignmentHandler.GetAssignmentsForCourse)
-		assignments.POST("/:id/publish", assignmentHandler.PublishAssignment)
-		assignments.POST("/:id/unpublish", assignmentHandler.UnpublishAssignment)
 		assignments.GET("/upcoming", assignmentHandler.GetUpcomingAssignments)
 		assignments.GET("/overdue", assignmentHandler.GetOverdueAssignments)
-		assignments.GET("/:id/completion", assignmentHandler.GetAssignmentCompletion)
+
+		// Protected endpoints - require assignment ownership (teacher/admin of the course)
+		assignments.PUT("/:id",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			assignmentHandler.UpdateAssignment)
+		assignments.DELETE("/:id",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			assignmentHandler.Delete)
+		assignments.POST("/:id/publish",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			assignmentHandler.PublishAssignment)
+		assignments.POST("/:id/unpublish",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			assignmentHandler.UnpublishAssignment)
+		assignments.GET("/:id/completion",
+			middlewares.AssignmentOwnershipMiddleware(db),
+			assignmentHandler.GetAssignmentCompletion)
 	}
 }
