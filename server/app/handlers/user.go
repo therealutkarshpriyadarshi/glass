@@ -41,7 +41,17 @@ func (h *UserHandler) Register(c *gin.Context) {
 		return
 	}
 
-	HandleCreated(c, "User created successfully")
+	// Authenticate the user and generate a token
+	token, err := h.serv.AuthenticateUser(user.Email, req.Password)
+	if err != nil {
+		SendError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"user":  user,
+		"token": token,
+	})
 }
 
 // Login handles user authentication
@@ -59,7 +69,17 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	// Get user details to return with token
+	user, err := h.serv.GetUserByEmail(req.Email)
+	if err != nil {
+		SendError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"user":  user,
+		"token": token,
+	})
 }
 
 // GetProfile retrieves the user profile for the authenticated user
