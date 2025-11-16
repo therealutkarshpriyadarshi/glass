@@ -21,12 +21,19 @@ func NewUserHandler(serv *services.UserService) *UserHandler {
 }
 
 // Register handles user registration
-// It binds the JSON request to a User model and creates a new user
+// It binds the JSON request to a RegisterRequest and creates a new user
 func (h *UserHandler) Register(c *gin.Context) {
-	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
+	var req models.RegisterRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		HandleBadRequest(c, err.Error())
 		return
+	}
+
+	user := models.User{
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Email:     req.Email,
+		Password:  req.Password,
 	}
 
 	if err := h.serv.CreateUser(&user); err != nil {
@@ -40,17 +47,13 @@ func (h *UserHandler) Register(c *gin.Context) {
 // Login handles user authentication
 // It validates user credentials and returns a JWT token upon successful login
 func (h *UserHandler) Login(c *gin.Context) {
-	var loginData struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
-	}
-
-	if err := c.ShouldBindJSON(&loginData); err != nil {
+	var req models.LoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		HandleBadRequest(c, err.Error())
 		return
 	}
 
-	token, err := h.serv.AuthenticateUser(loginData.Email, loginData.Password)
+	token, err := h.serv.AuthenticateUser(req.Email, req.Password)
 	if err != nil {
 		SendError(err, c)
 		return
@@ -112,19 +115,14 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 // ChangePassword changes the password for the authenticated user
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	userID := GetUserID(c)
-	var passwordData struct {
-		OldPassword string `json:"oldPassword" binding:"required"`
-		NewPassword string `json:"newPassword" binding:"required"`
-	}
+	var req models.ChangePasswordRequest
 
-	if err := c.ShouldBindJSON(&passwordData); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		HandleBadRequest(c, err.Error())
 		return
 	}
 
-	oldP := passwordData.OldPassword
-	newP := passwordData.NewPassword
-	if err := h.serv.ChangePassword(userID, oldP, newP); err != nil {
+	if err := h.serv.ChangePassword(userID, req.OldPassword, req.NewPassword); err != nil {
 		HandleBadRequest(c, err.Error())
 		return
 	}
