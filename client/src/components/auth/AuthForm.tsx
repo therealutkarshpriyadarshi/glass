@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Lock, Mail, User, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,11 +66,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   const getPasswordStrengthColor = (strength: number): string => {
-    if (strength === 0) return "bg-gray-600";
-    if (strength === 1) return "bg-red-500";
-    if (strength === 2) return "bg-orange-500";
-    if (strength === 3) return "bg-yellow-500";
-    return "bg-green-500";
+    if (strength === 0) return "bg-white/10";
+    if (strength === 1) return "bg-white/20";
+    if (strength === 2) return "bg-white/40";
+    if (strength === 3) return "bg-white/60";
+    return "bg-white/80";
   };
 
   const getPasswordStrengthText = (strength: number): string => {
@@ -168,47 +168,37 @@ const AuthForm: React.FC<AuthFormProps> = ({
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-foreground">First Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-400" />
-                  <Input
-                    id="firstName"
-                    type="text"
-                    placeholder="John"
-                    value={formData.firstName}
-                    onChange={handleChange("firstName")}
-                    className={`pl-10 transition-all ${
-                      errors.firstName
-                        ? "border-red-500 focus-visible:ring-red-500"
-                        : "focus-visible:ring-blue-500 focus-visible:border-blue-500"
-                    }`}
-                  />
-                </div>
+                <Label htmlFor="firstName" className="text-white/60 text-sm">First Name</Label>
+                <Input
+                  id="firstName"
+                  type="text"
+                  placeholder="John"
+                  value={formData.firstName}
+                  onChange={handleChange("firstName")}
+                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
+                    errors.firstName ? "border-red-500/50" : ""
+                  }`}
+                />
                 {errors.firstName && (
-                  <p className="text-xs text-red-400">
+                  <p className="text-xs text-red-500/80">
                     {errors.firstName}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400" />
-                  <Input
-                    id="lastName"
-                    type="text"
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={handleChange("lastName")}
-                    className={`pl-10 transition-all ${
-                      errors.lastName
-                        ? "border-red-500 focus-visible:ring-red-500"
-                        : "focus-visible:ring-purple-500 focus-visible:border-purple-500"
-                    }`}
-                  />
-                </div>
+                <Label htmlFor="lastName" className="text-white/60 text-sm">Last Name</Label>
+                <Input
+                  id="lastName"
+                  type="text"
+                  placeholder="Doe"
+                  value={formData.lastName}
+                  onChange={handleChange("lastName")}
+                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
+                    errors.lastName ? "border-red-500/50" : ""
+                  }`}
+                />
                 {errors.lastName && (
-                  <p className="text-xs text-red-400">
+                  <p className="text-xs text-red-500/80">
                     {errors.lastName}
                   </p>
                 )}
@@ -218,72 +208,57 @@ const AuthForm: React.FC<AuthFormProps> = ({
         )}
       </AnimatePresence>
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-foreground">Email</Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-cyan-400" />
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange("email")}
-            className={`pl-10 transition-all ${
-              errors.email
-                ? "border-red-500 focus-visible:ring-red-500"
-                : "focus-visible:ring-cyan-500 focus-visible:border-cyan-500"
-            }`}
-          />
-        </div>
+        <Label htmlFor="email" className="text-white/60 text-sm">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={formData.email}
+          onChange={handleChange("email")}
+          className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
+            errors.email ? "border-red-500/50" : ""
+          }`}
+        />
         {errors.email && (
-          <p className="text-xs text-red-400">{errors.email}</p>
+          <p className="text-xs text-red-500/80">{errors.email}</p>
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-foreground">Password</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-pink-400" />
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange("password")}
-            className={`pl-10 transition-all ${
-              errors.password
-                ? "border-red-500 focus-visible:ring-red-500"
-                : "focus-visible:ring-pink-500 focus-visible:border-pink-500"
-            }`}
-          />
-        </div>
+        <Label htmlFor="password" className="text-white/60 text-sm">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={handleChange("password")}
+          className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
+            errors.password ? "border-red-500/50" : ""
+          }`}
+        />
         {isSignUp && formData.password && (
-          <div className="space-y-1">
-            <div className="flex gap-1 h-1">
+          <div className="space-y-1.5">
+            <div className="flex gap-1 h-0.5">
               {[...Array(4)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className={`flex-1 rounded-full transition-all ${
-                    i < passwordStrength ? getPasswordStrengthColor(passwordStrength) : "bg-gray-700"
+                  className={`flex-1 rounded-full ${
+                    i < passwordStrength ? getPasswordStrengthColor(passwordStrength) : "bg-white/5"
                   }`}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: i < passwordStrength ? 1 : 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  transition={{ duration: 0.2, delay: i * 0.03 }}
                 />
               ))}
             </div>
             {passwordStrength > 0 && (
-              <p className={`text-xs flex items-center gap-1 ${
-                passwordStrength === 4 ? "text-green-400" :
-                passwordStrength === 3 ? "text-yellow-400" :
-                passwordStrength === 2 ? "text-orange-400" : "text-red-400"
-              }`}>
-                {passwordStrength === 4 && <CheckCircle2 className="h-3 w-3" />}
+              <p className="text-xs text-white/40">
                 {getPasswordStrengthText(passwordStrength)} password
               </p>
             )}
           </div>
         )}
         {errors.password && (
-          <p className="text-xs text-red-400">
+          <p className="text-xs text-red-500/80">
             {errors.password}
           </p>
         )}
@@ -298,29 +273,34 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={{ duration: 0.3 }}
           >
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="text-white/60 text-sm">Confirm Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-400" />
                 <Input
                   id="confirmPassword"
                   type="password"
                   placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={handleChange("confirmPassword")}
-                  className={`pl-10 transition-all ${
+                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
                     errors.confirmPassword
-                      ? "border-red-500 focus-visible:ring-red-500"
+                      ? "border-red-500/50"
                       : formData.confirmPassword && formData.password === formData.confirmPassword
-                      ? "border-green-500 focus-visible:ring-green-500"
-                      : "focus-visible:ring-indigo-500 focus-visible:border-indigo-500"
+                      ? "border-white/30"
+                      : ""
                   }`}
                 />
                 {formData.confirmPassword && formData.password === formData.confirmPassword && (
-                  <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-400" />
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  >
+                    <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+                  </motion.div>
                 )}
               </div>
               {errors.confirmPassword && (
-                <p className="text-xs text-red-400">
+                <p className="text-xs text-red-500/80">
                   {errors.confirmPassword}
                 </p>
               )}
@@ -331,16 +311,16 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg shadow-blue-500/50 transition-all hover:shadow-xl hover:shadow-blue-500/60 hover:scale-[1.02]"
+        className="w-full mt-6 bg-white text-black hover:bg-white/90 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <span className="flex items-center gap-2">
             <motion.div
-              className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full"
+              className="h-4 w-4 border-2 border-black/20 border-t-black rounded-full"
               animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />
-            Loading...
+            {isSignUp ? "Creating account..." : "Signing in..."}
           </span>
         ) : (
           isSignUp ? "Create Account" : "Sign In"
