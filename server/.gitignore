@@ -21,4 +21,8 @@
 # Go workspace file
 go.work
 
+# Air - Live reload for Go apps
+tmp/
+build-errors.log
+
 app/firebase/credentials.json
