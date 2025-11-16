@@ -8,7 +8,8 @@
       "Bash(npm install:*)",
       "Bash(docker-compose:*)",
       "Bash(timeout 5 sh -c \"sleep 3 && docker-compose -f compose.dev.yaml logs server\" 2)",
-      "Bash(nul)"
+      "Bash(nul)",
+      "Bash(timeout 8 sh:*)"
     ],
     "deny": [],
     "ask": []
