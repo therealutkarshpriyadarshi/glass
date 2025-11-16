@@ -8,11 +8,11 @@ import (
 	"server/app/services"
 )
 
-func SetupEnrollmentRoutes(r *gin.Engine, db *gorm.DB) {
+func SetupEnrollmentRoutes(r gin.IRouter, db *gorm.DB) {
 	enrollmentService := services.NewEnrollmentService(db)
 	enrollmentHandler := handlers.NewEnrollmentHandler(enrollmentService)
 
-	enrollmentRoutes := r.Group("/api/enrollments")
+	enrollmentRoutes := r.Group("/enrollments")
 	enrollmentRoutes.Use(middlewares.AuthMiddleware("hello"))
 
 	{

@@ -65,17 +65,20 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	// Set up routes
-	routes.SetUpUserRoutes(r, db, []byte(secret), expiration)
-	routes.SetupCourseRoutes(r, db)
-	routes.SetupGradeRoutes(r, db)
-	routes.SetupAssignmentRoutes(r, db)
-	routes.SetupEnrollmentRoutes(r, db)
+	// Create API group
+	api := r.Group("/api")
+
+	// Set up routes under /api prefix
+	routes.SetUpUserRoutes(api, db, []byte(secret), expiration)
+	routes.SetupCourseRoutes(api, db)
+	routes.SetupGradeRoutes(api, db)
+	routes.SetupAssignmentRoutes(api, db)
+	routes.SetupEnrollmentRoutes(api, db)
 	if cs != nil {
-		routes.SetupSubmissionRoutes(r, db, cs)
-		routes.SetupMaterialRoutes(r, db, cs)
+		routes.SetupSubmissionRoutes(api, db, cs)
+		routes.SetupMaterialRoutes(api, db, cs)
 	}
-	routes.SetupQuizRoutes(r, db, secret)
+	routes.SetupQuizRoutes(api, db, secret)
 
 	// Start server
 	port := os.Getenv("PORT")

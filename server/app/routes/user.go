@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetUpUserRoutes(r *gin.Engine, db *gorm.DB, secret []byte, expiration time.Duration) {
+func SetUpUserRoutes(r gin.IRouter, db *gorm.DB, secret []byte, expiration time.Duration) {
 	service := services.NewUserService(db, secret, expiration)
 	handler := handlers.NewUserHandler(service)
 

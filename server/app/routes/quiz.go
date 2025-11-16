@@ -9,11 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupQuizRoutes(r *gin.Engine, db *gorm.DB, secret string) {
+func SetupQuizRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	quizService := services.NewQuizService(db)
 	quizHandler := handlers.NewQuizHandler(quizService)
 
-	quizRoutes := r.Group("/api/quizzes")
+	quizRoutes := r.Group("/quizzes")
 	quizRoutes.Use(middlewares.AuthMiddleware(secret))
 	{
 		quizRoutes.POST("/", quizHandler.CreateQuiz)

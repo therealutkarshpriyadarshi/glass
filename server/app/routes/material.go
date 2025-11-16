@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupMaterialRoutes(r *gin.Engine, db *gorm.DB, storage *firebase.CloudStorage) {
+func SetupMaterialRoutes(r gin.IRouter, db *gorm.DB, storage *firebase.CloudStorage) {
 	serv := services.NewMaterialService(db, storage)
 	handler := handlers.NewMaterialHandler(serv)
 
