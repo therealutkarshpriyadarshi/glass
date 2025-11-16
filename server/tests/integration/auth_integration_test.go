@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"server/app/config"
 	"server/app/handlers"
 	"server/app/middlewares"
 	"server/app/models"

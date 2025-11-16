@@ -14,10 +14,10 @@ import (
 )
 
 func main() {
-	// Load environment variables
+	// Load environment variables (optional - .env may not exist in Docker)
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file %v", err)
+		log.Printf("Warning: Error loading .env file %v (this is normal in Docker)", err)
 	}
 
 	// Initialize database
@@ -41,22 +41,27 @@ func main() {
 	}
 
 	// Configure CORS
-	corsConfig := cors.Config{
-		AllowOrigins:     []string{os.Getenv("CLIENT_URL")},
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}
-
-	// Fallback to allow all origins in development if CLIENT_URL is not set
-	if corsConfig.AllowOrigins[0] == "" {
+	clientURL := os.Getenv("CLIENT_URL")
+	if clientURL == "" {
 		log.Println("Warning: CLIENT_URL not set, allowing all origins (development only)")
-		corsConfig.AllowAllOrigins = true
+		r.Use(cors.New(cors.Config{
+			AllowAllOrigins:  true,
+			AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+			AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+			ExposeHeaders:    []string{"Content-Length"},
+			AllowCredentials: true,
+			MaxAge:           12 * time.Hour,
+		}))
+	} else {
+		r.Use(cors.New(cors.Config{
+			AllowOrigins:     []string{clientURL},
+			AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+			AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+			ExposeHeaders:    []string{"Content-Length"},
+			AllowCredentials: true,
+			MaxAge:           12 * time.Hour,
+		}))
 	}
-
-	r.Use(cors.New(corsConfig))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 

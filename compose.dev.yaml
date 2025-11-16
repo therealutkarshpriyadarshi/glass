@@ -15,10 +15,9 @@ services:
       - DB_PASSWORD=pswrd
       - DB_NAME=glass
       - DB_PORT=5432
+      - SECRET_KEY=dev-secret-key-change-in-production
     volumes:
       - ./server:/app
-      - /app/node_modules
-    command: npm run dev
 
   db:
     image: postgres:13
@@ -40,11 +39,10 @@ services:
     depends_on:
       - server
     environment:
-      - REACT_APP_API_URL=http://localhost:8080
+      - VITE_API_URL=http://localhost:8080
     volumes:
       - ./client:/app
       - /app/node_modules
-    command: npm start
 
   llm:
     build:
