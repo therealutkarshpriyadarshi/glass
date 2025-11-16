@@ -7,6 +7,10 @@ import UserCourses from "./components/courses/list/UserCourses";
 import CourseOverview from "./components/courses/CourseOverview";
 import CreateCourseComponent from "./components/courses/create/CreateCourseComponent";
 import CreateCourse from "./components/courses/create/CreateCourse";
+import AssignmentDetail from "./components/courses/assignment/AssignmentDetail";
+import SubmitAssignment from "./components/courses/assignment/SubmitAssignment";
+import SubmissionsList from "./components/courses/assignment/SubmissionsList";
+import GradesList from "./components/student/grades/GradesList";
 import SuspenseWrapper from "./SuspenseWrapper";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
@@ -61,6 +65,46 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <SuspenseWrapper>
               <CourseOverview />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/assignments/:assignmentId",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <AssignmentDetail />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/assignments/:assignmentId/submit",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <SubmitAssignment />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/assignments/:assignmentId/submissions",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <SubmissionsList />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/grades",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <GradesList />
             </SuspenseWrapper>
           </ProtectedRoute>
         ),

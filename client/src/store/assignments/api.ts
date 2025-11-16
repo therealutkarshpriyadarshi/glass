@@ -55,6 +55,106 @@ export const fetchAssignments = createAsyncThunk(
 );
 
 /**
+ * Fetches assignments for a specific course.
+ * @param courseId - The ID of the course.
+ * @returns A promise that resolves to an array of Assignment objects.
+ * @throws Will reject with an error if the fetch fails.
+ */
+export const fetchCourseAssignments = createAsyncThunk(
+  "assignments/fetchByCourse",
+  async (courseId: number, { rejectWithValue }) => {
+    try {
+      return await apiCall<Assignment[]>({
+        url: `/courses/${courseId}/assignments`,
+        method: "GET",
+      });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+/**
+ * Fetches a single assignment by ID.
+ * @param id - The ID of the assignment.
+ * @returns A promise that resolves to an Assignment object.
+ * @throws Will reject with an error if the fetch fails.
+ */
+export const fetchAssignmentById = createAsyncThunk(
+  "assignments/fetchById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      return await apiCall<Assignment>({
+        url: `/assignments/${id}`,
+        method: "GET",
+      });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+/**
+ * Publishes an assignment.
+ * @param id - The ID of the assignment to publish.
+ * @returns A promise that resolves to the ID of the published assignment.
+ * @throws Will reject with an error if the publish fails.
+ */
+export const publishAssignment = createAsyncThunk(
+  "assignments/publish",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await apiCall({
+        url: `/assignments/${id}/publish`,
+        method: "POST",
+      });
+      toast({
+        title: "Success",
+        description: "Assignment published successfully",
+      });
+      return id;
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to publish assignment",
+        variant: "destructive",
+      });
+      return rejectWithValue(error);
+    }
+  }
+);
+
+/**
+ * Unpublishes an assignment.
+ * @param id - The ID of the assignment to unpublish.
+ * @returns A promise that resolves to the ID of the unpublished assignment.
+ * @throws Will reject with an error if the unpublish fails.
+ */
+export const unpublishAssignment = createAsyncThunk(
+  "assignments/unpublish",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await apiCall({
+        url: `/assignments/${id}/unpublish`,
+        method: "POST",
+      });
+      toast({
+        title: "Success",
+        description: "Assignment unpublished successfully",
+      });
+      return id;
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to unpublish assignment",
+        variant: "destructive",
+      });
+      return rejectWithValue(error);
+    }
+  }
+);
+
+/**
  * Deletes an assignment.
  * @param id - The ID of the assignment to delete.
  * @returns A promise that resolves to the ID of the deleted assignment.
