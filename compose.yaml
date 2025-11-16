@@ -36,7 +36,7 @@ services:
     depends_on:
       - server
     environment:
-      - REACT_APP_API_URL=http://server:8080
+      - VITE_API_BASE_URL=http://server:8080/api
 
 volumes:
   postgres_data:
