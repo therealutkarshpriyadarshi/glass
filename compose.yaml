@@ -38,18 +38,5 @@ services:
     environment:
       - REACT_APP_API_URL=http://server:8080
 
-  llm:
-    build:
-      context: ./llm
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - server
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    volumes:
-      - ./llm:/app
-
 volumes:
   postgres_data:
