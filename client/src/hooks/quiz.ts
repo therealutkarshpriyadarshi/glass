@@ -1,4 +1,3 @@
-import { Form } from "antd";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import type { Question } from "../store/quiz/type";
@@ -23,7 +22,6 @@ interface QuizFormData {
 }
 
 export const useQuizForm = (quizId?: number) => {
-  const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const { currentQuiz, isLoading } = useAppSelector((state) => state.quizzes);
   const [initialValues, setInitialValues] = useState<QuizFormData | null>(null);
@@ -46,9 +44,8 @@ export const useQuizForm = (quizId?: number) => {
         questions: currentQuiz.questions,
       };
       setInitialValues(values);
-      form.setFieldsValue(values);
     }
-  }, [currentQuiz, form]);
+  }, [currentQuiz]);
 
   const handleSave = async (values: QuizFormData) => {
     const [startTime, endTime] = values.timeRange;
@@ -103,7 +100,6 @@ export const useQuizForm = (quizId?: number) => {
   };
 
   return {
-    form,
     initialValues,
     isLoading,
     handleSave,

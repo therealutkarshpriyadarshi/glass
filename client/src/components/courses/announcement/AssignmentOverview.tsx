@@ -1,15 +1,12 @@
 import React from "react";
-import { List, Avatar, Typography, Space } from "antd";
-import { FileOutlined, CalendarOutlined } from "@ant-design/icons";
+import { FileText, Calendar } from "lucide-react";
 import type { AssignmentBasic } from "../../../store/assignments/type";
-import "./style.css";
-import styled from "styled-components";
-
-const { Text } = Typography;
+import { Avatar } from "@/components/ui/avatar";
 
 interface AssignmentOverviewProps {
   assignments: AssignmentBasic[];
 }
+
 /**
  * AssignmentOverview component displays a list of assignments.
  *
@@ -22,47 +19,35 @@ const AssignmentOverview: React.FC<AssignmentOverviewProps> = ({
   assignments,
 }) => {
   return (
-    <List
-      itemLayout="horizontal"
-      dataSource={assignments}
-      renderItem={(assignment) => (
-        <StyledListItem>
-          <List.Item.Meta
-            avatar={<AssignmentAvatar icon={<FileOutlined />} />}
-            title={
-              <AssignmentTitle level={4}>{assignment.title}</AssignmentTitle>
-            }
-            description={
-              <Space direction="vertical" size="small">
-                <Text type="secondary">
-                  <CalendarOutlined /> Due: {assignment.dueDate}
-                </Text>
-                <Text>{assignment.description}</Text>
-              </Space>
-            }
-          />
-        </StyledListItem>
-      )}
-    />
+    <div className="space-y-0">
+      {assignments.map((assignment, index) => (
+        <div
+          key={index}
+          className="p-4 border-b border-border transition-colors hover:bg-accent/50 cursor-pointer"
+        >
+          <div className="flex items-start gap-4">
+            <Avatar className="h-10 w-10 flex items-center justify-center bg-primary">
+              <FileText className="h-5 w-5 text-primary-foreground" />
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-lg font-semibold text-foreground mb-2">
+                {assignment.title}
+              </h4>
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  Due: {assignment.dueDate}
+                </p>
+                <p className="text-sm text-foreground">
+                  {assignment.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
-
-const StyledListItem = styled(List.Item)`
-  padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #f9f9f9;
-  }
-`;
-
-const AssignmentAvatar = styled(Avatar)`
-  background-color: #1890ff;
-`;
-
-const AssignmentTitle = styled(Typography.Title)`
-  margin-bottom: 0 !important;
-`;
 
 export default AssignmentOverview;

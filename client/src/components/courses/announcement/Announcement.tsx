@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Segmented, Row, Col } from "antd";
 import AssignmentOverview from "./AssignmentOverview";
 import MaterialOverview from "./MaterialOverview";
 import CourseHeader from "./CourseHeader";
 import { useAppSelector } from "../../../store/hooks";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Announcement: React.FC = () => {
   const { assignments, materials } = useAppSelector((state) => {
@@ -15,33 +15,29 @@ const Announcement: React.FC = () => {
   const [isAssignment, setIsAssignment] = useState(true);
 
   return (
-    <Row
-      gutter={[16, 16]}
-      style={{
-        marginTop: "10px",
-      }}
-    >
-      <Col span={24}>
-        <CourseHeader title="Announcements" />
-      </Col>
+    <div className="mt-2 space-y-4">
+      <CourseHeader title="Announcements" />
 
-      <Col span={18} />
+      <div className="flex justify-end">
+        <Tabs
+          value={isAssignment ? "assignments" : "materials"}
+          onValueChange={(value) => setIsAssignment(value === "assignments")}
+        >
+          <TabsList>
+            <TabsTrigger value="assignments">Assignments</TabsTrigger>
+            <TabsTrigger value="materials">Materials</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
 
-      <Col span={6}>
-        <Segmented
-          options={["Assignments", "Materials"]}
-          onChange={(value) => setIsAssignment(value === "Assignments")}
-        />
-      </Col>
-
-      <Col span={24}>
+      <div>
         {isAssignment ? (
           <AssignmentOverview assignments={assignments} />
         ) : (
           <MaterialOverview materials={materials} />
         )}
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

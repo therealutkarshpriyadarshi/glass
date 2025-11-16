@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Input, Card, Spin, Button } from "antd";
-import { LinkOutlined } from "@ant-design/icons";
+import { Link as LinkIcon } from "lucide-react";
 import axios from "axios";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 
 interface LinkPreviewProps {
   url: string;
@@ -57,45 +60,46 @@ const LinkPreview: React.FC<LinkPreviewProps> = ({ url, setUrl }) => {
   }, [url, fetchLinkPreview]);
 
   return (
-    <div className="p-4">
-      <Input
-        prefix={<LinkOutlined className="text-gray-400" />}
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="Enter URL"
-        className="mb-4"
-      />
-      <Button
-        type="primary"
-        onClick={fetchLinkPreview}
-        disabled={!url}
-        className="mb-4"
-      >
+    <div className="p-4 space-y-4">
+      <div className="relative">
+        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="Enter URL"
+          className="pl-10"
+        />
+      </div>
+      <Button onClick={fetchLinkPreview} disabled={!url || loading}>
         Get Preview
       </Button>
 
-      {loading && <Spin className="block mb-4" />}
+      {loading && <Spinner />}
 
       {preview && (
-        <Card
-          hoverable
-          cover={
-            <img
-              alt={preview.title}
-              src={preview.image}
-              className="object-cover h-40"
-            />
-          }
-          className="max-w-md"
-        >
-          <Card.Meta
-            title={
-              <a href={preview.url} target="_blank" rel="noopener noreferrer">
+        <Card className="max-w-md hover:shadow-lg transition-shadow cursor-pointer">
+          <img
+            alt={preview.title}
+            src={preview.image}
+            className="object-cover h-40 w-full rounded-t-lg"
+          />
+          <CardHeader>
+            <CardTitle>
+              <a
+                href={preview.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
                 {preview.title}
               </a>
-            }
-            description={preview.description}
-          />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              {preview.description}
+            </p>
+          </CardContent>
         </Card>
       )}
     </div>

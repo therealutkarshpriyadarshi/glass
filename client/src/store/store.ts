@@ -3,6 +3,7 @@ import mentorReducer from "./people/mentorSlice";
 import studentReducer from "./people/studentSlice";
 import authReducer from "./auth/authSlice";
 import assignmentReducer from "./assignments/slice";
+import activityAssignmentReducer from "./activity/assignmentSlice";
 import dashboardReducer from "./dasboard/slice";
 import coursesReducer from "./courses/slice";
 import materialReducer from "./materials/slice";
@@ -13,6 +14,7 @@ const store = configureStore({
     mentors: mentorReducer,
     students: studentReducer,
     assignments: assignmentReducer,
+    activityAssignment: activityAssignmentReducer,
     auth: authReducer,
     dashboard: dashboardReducer,
     courses: coursesReducer,

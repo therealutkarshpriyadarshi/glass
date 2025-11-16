@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Form, Input, DatePicker, Button, Row, Col } from "antd";
 import Description from "./components/Description";
 import FileUpload from "./components/FileUpload";
 import CourseDropdown from "./components/CourseDropdown";
-
-const { RangePicker } = DatePicker;
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 
 /**
  * CreateAssignment component for creating a new assignment
@@ -16,94 +17,135 @@ const { RangePicker } = DatePicker;
  * @returns {JSX.Element} Rendered CreateAssignment component
  */
 const CreateAssignment: React.FC = (): JSX.Element => {
-  const [form] = Form.useForm();
-  const [courses, setCourses] = useState<string[]>([]);
-  const [markdown, setMarkdown] = useState<string>("");
+  const [title, setTitle] = useState("");
+  const [markdown, setMarkdown] = useState("");
+  const [course, setCourse] = useState("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [files, setFiles] = useState<File[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const onFinish = (values: any) => {
-    console.log("Form values:", values);
-    // Handle form submission
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!title) newErrors.title = "Please input the title!";
+    if (!markdown) newErrors.description = "Please input the description!";
+    if (!course) newErrors.course = "Please select a course!";
+    if (!startDate || !endDate)
+      newErrors.dateRange = "Please select the date/time range!";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleUpload = (files: File[]) => {
-    console.log("Uploading file:", files);
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      const values = {
+        title,
+        description: markdown,
+        course,
+        dateRange: [startDate, endDate],
+        files,
+      };
+      console.log("Form values:", values);
+      // Handle form submission
+    }
+  };
+
+  const handleUpload = (uploadedFiles: File[]) => {
+    console.log("Uploading file:", uploadedFiles);
+    setFiles(uploadedFiles);
   };
 
   const handleCourseSelect = (value: string) => {
     console.log("Selected course:", value);
-    setCourses([...courses, value]);
+    setCourse(value);
+    setErrors((prev) => ({ ...prev, course: "" }));
   };
 
   return (
-    <Form form={form} layout="vertical" onFinish={onFinish}>
-      <Row gutter={[16, 16]}>
-        <Col span={16}>
-          <Form.Item
-            name="title"
-            label="Assignment Title"
-            rules={[{ required: true, message: "Please input the title!" }]}
-          >
-            <Input />
-          </Form.Item>
+    <form onSubmit={handleSubmit}>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="md:col-span-3 space-y-4">
+          <div>
+            <Label htmlFor="title">Assignment Title</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setErrors((prev) => ({ ...prev, title: "" }));
+              }}
+            />
+            {errors.title && (
+              <p className="text-sm text-destructive mt-1">{errors.title}</p>
+            )}
+          </div>
 
-          <Form.Item
-            name="description"
-            label="Assignment Description"
-            rules={[
-              { required: true, message: "Please input the description!" },
-            ]}
-          >
+          <div>
+            <Label>Assignment Description</Label>
             <Description
               markdown={markdown}
-              onChange={setMarkdown}
+              onChange={(value) => {
+                setMarkdown(value);
+                setErrors((prev) => ({ ...prev, description: "" }));
+              }}
               editorRef={null}
             />
-          </Form.Item>
-        </Col>
-        <Col span={6}>
-          <Form.Item
-            name="course"
-            label="Course"
-            rules={[{ required: true, message: "Please select a course!" }]}
-          >
+            {errors.description && (
+              <p className="text-sm text-destructive mt-1">
+                {errors.description}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="md:col-span-1 space-y-4">
+          <div>
+            <Label>Course</Label>
             <CourseDropdown onSelect={handleCourseSelect} />
-          </Form.Item>
-          <Form.Item
-            name="dateRange"
-            label="Start and End Date/Time"
-            rules={[
-              { required: true, message: "Please select the date/time range!" },
-            ]}
-          >
-            <RangePicker
-              showTime={{ format: "HH:mm" }}
-              format="YYYY-MM-DD HH:mm"
+            {errors.course && (
+              <p className="text-sm text-destructive mt-1">{errors.course}</p>
+            )}
+          </div>
+
+          <div>
+            <Label>Start Date/Time</Label>
+            <DatePicker
+              value={startDate}
+              onChange={(date: Date | undefined) => {
+                setStartDate(date);
+                setErrors((prev) => ({ ...prev, dateRange: "" }));
+              }}
             />
-          </Form.Item>
-          <Form.Item
-            name="files"
-            label="Add Files"
-            valuePropName="fileList"
-            getValueFromEvent={(e) => {
-              if (Array.isArray(e)) return e;
-              return e && e.fileList;
-            }}
-          >
+          </div>
+
+          <div>
+            <Label>End Date/Time</Label>
+            <DatePicker
+              value={endDate}
+              onChange={(date: Date | undefined) => {
+                setEndDate(date);
+                setErrors((prev) => ({ ...prev, dateRange: "" }));
+              }}
+            />
+            {errors.dateRange && (
+              <p className="text-sm text-destructive mt-1">
+                {errors.dateRange}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label>Add Files</Label>
             <FileUpload onFilesSelected={handleUpload} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Create Assignment
-        </Button>
-      </Form.Item>
-    </Form>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <Button type="submit">Create Assignment</Button>
+      </div>
+    </form>
   );
 };
 

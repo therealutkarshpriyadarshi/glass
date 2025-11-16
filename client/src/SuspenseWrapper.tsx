@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { Spin } from "antd";
+import { SpinnerOverlay } from "@/components/ui/spinner";
 
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
-  <Suspense fallback={<Spin size="large" />}>{children}</Suspense>
+  <Suspense fallback={<SpinnerOverlay />}>{children}</Suspense>
 );
 
 export default SuspenseWrapper;

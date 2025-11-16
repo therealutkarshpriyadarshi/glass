@@ -1,54 +1,10 @@
 import React, { useEffect } from "react";
-import {
-  Layout,
-  Typography,
-  Row,
-  Col,
-  Card,
-  Statistic,
-  List,
-  Avatar,
-  Spin,
-} from "antd";
-import {
-  BookOutlined,
-  CalendarOutlined,
-  MessageOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
+import { BookOpen, Calendar, MessageSquare, Bell } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchDashboardData } from "../../store/dasboard/slice";
-import styled from "styled-components";
-
-const { Content } = Layout;
-const { Title, Text } = Typography;
-
-const StyledLayout = styled(Layout)`
-  min-height: 100vh;
-  background: #f0f2f5;
-`;
-
-const StyledContent = styled(Content)`
-  padding: 24px;
-  margin: 0 auto;
-  max-width: 1200px;
-`;
-
-const StyledCard = styled(Card)`
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  height: 100%;
-`;
-
-const StatCard = styled(StyledCard)`
-  text-align: center;
-`;
-
-const ListCard = styled(StyledCard)`
-  .ant-card-head-title {
-    font-size: 18px;
-  }
-`;
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar } from "@/components/ui/avatar";
+import { Spinner } from "@/components/ui/spinner";
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -67,119 +23,150 @@ const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <StyledLayout>
-        <StyledContent>
-          <Spin size="large" />
-        </StyledContent>
-      </StyledLayout>
+      <div className="min-h-screen bg-background">
+        <div className="p-6 max-w-7xl mx-auto flex justify-center items-center min-h-screen">
+          <Spinner size="lg" />
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <StyledLayout>
-        <StyledContent>
-          <Title level={2}>Error</Title>
-          <Text type="danger">{error}</Text>
-        </StyledContent>
-      </StyledLayout>
+      <div className="min-h-screen bg-background">
+        <div className="p-6 max-w-7xl mx-auto">
+          <h2 className="text-2xl font-bold text-foreground mb-4">Error</h2>
+          <p className="text-destructive">{error}</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <StyledLayout>
-      <StyledContent>
-        <Title level={2} style={{ marginBottom: 24 }}>
-          Dashboard
-        </Title>
-        <Row gutter={[24, 24]}>
-          <Col xs={24} sm={8}>
-            <StatCard>
-              <Statistic
-                title="Active Courses"
-                value={courseStats.activeCourses}
-                prefix={<BookOutlined style={{ color: "#1890ff" }} />}
-              />
-            </StatCard>
-          </Col>
-          <Col xs={24} sm={8}>
-            <StatCard>
-              <Statistic
-                title="Upcoming Assignments"
-                value={courseStats.upcomingAssignments}
-                prefix={<CalendarOutlined style={{ color: "#52c41a" }} />}
-              />
-            </StatCard>
-          </Col>
-          <Col xs={24} sm={8}>
-            <StatCard>
-              <Statistic
-                title="New Messages"
-                value={courseStats.newMessages}
-                prefix={<MessageOutlined style={{ color: "#faad14" }} />}
-              />
-            </StatCard>
-          </Col>
-          <Col xs={24} md={12}>
-            <ListCard
-              title="Upcoming Assignments"
-              extra={<a href="#">View All</a>}
-            >
-              <List
-                itemLayout="horizontal"
-                dataSource={upcomingAssignments}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          icon={<CalendarOutlined />}
-                          style={{ backgroundColor: "#1890ff" }}
-                        />
-                      }
-                      title={item.title ? <a href="#">{item.title}</a> : null}
-                      description={`Due: ${item.dueDate}`}
-                    />
-                  </List.Item>
-                )}
-              />
-            </ListCard>
-          </Col>
-          <Col xs={24} md={12}>
-            <ListCard
-              title="Recent Announcements"
-              extra={<a href="#">View All</a>}
-            >
-              <List
-                style={{
-                  padding: "10px",
-                }}
-                itemLayout="horizontal"
-                dataSource={recentAnnouncements}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          icon={<BellOutlined />}
-                          style={{ backgroundColor: "#52c41a" }}
-                        />
-                      }
-                      title={<a href="#">{item.title}</a>}
-                      description={
-                        item.content.length > 50
+    <div className="min-h-screen bg-background">
+      <div className="p-6 max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-foreground mb-6">Dashboard</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+          {/* Active Courses Stat */}
+          <Card className="text-center">
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center gap-2">
+                <BookOpen className="h-8 w-8 text-primary" />
+                <p className="text-sm text-muted-foreground">Active Courses</p>
+                <p className="text-3xl font-bold text-foreground">
+                  {courseStats.activeCourses}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Upcoming Assignments Stat */}
+          <Card className="text-center">
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center gap-2">
+                <Calendar className="h-8 w-8 text-green-500" />
+                <p className="text-sm text-muted-foreground">
+                  Upcoming Assignments
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  {courseStats.upcomingAssignments}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* New Messages Stat */}
+          <Card className="text-center">
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center gap-2">
+                <MessageSquare className="h-8 w-8 text-yellow-500" />
+                <p className="text-sm text-muted-foreground">New Messages</p>
+                <p className="text-3xl font-bold text-foreground">
+                  {courseStats.newMessages}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Upcoming Assignments List */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg">Upcoming Assignments</CardTitle>
+              <a
+                href="#"
+                className="text-sm text-primary hover:underline"
+              >
+                View All
+              </a>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {upcomingAssignments.map((item, index) => (
+                  <div key={index} className="flex items-start gap-4">
+                    <Avatar className="h-10 w-10 flex items-center justify-center bg-primary">
+                      <Calendar className="h-5 w-5 text-primary-foreground" />
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      {item.title && (
+                        <a
+                          href="#"
+                          className="font-medium text-foreground hover:text-primary"
+                        >
+                          {item.title}
+                        </a>
+                      )}
+                      <p className="text-sm text-muted-foreground">
+                        Due: {item.dueDate}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Recent Announcements List */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg">Recent Announcements</CardTitle>
+              <a
+                href="#"
+                className="text-sm text-primary hover:underline"
+              >
+                View All
+              </a>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentAnnouncements.map((item, index) => (
+                  <div key={index} className="flex items-start gap-4">
+                    <Avatar className="h-10 w-10 flex items-center justify-center bg-green-500">
+                      <Bell className="h-5 w-5 text-white" />
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href="#"
+                        className="font-medium text-foreground hover:text-primary"
+                      >
+                        {item.title}
+                      </a>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {item.content.length > 50
                           ? `${item.content.substring(0, 50)}...`
-                          : item.content
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
-            </ListCard>
-          </Col>
-        </Row>
-      </StyledContent>
-    </StyledLayout>
+                          : item.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

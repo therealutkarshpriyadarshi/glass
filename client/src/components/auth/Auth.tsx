@@ -1,61 +1,9 @@
 import React from "react";
-import { Typography, Alert } from "antd";
-import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
+import { AlertCircle } from "lucide-react";
 import AuthForm from "./AuthForm";
 import FeatureList from "./FeatureList";
 import { useAuth } from "../../hooks/auth";
-
-const { Title, Text } = Typography;
-
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
-
-const Container = styled.div`
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-`;
-
-const LeftPanel = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f2f5;
-  padding: 2rem;
-  animation: ${fadeIn} 0.5s ease-out;
-`;
-
-const RightPanel = styled.div`
-  flex: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 2rem;
-  animation: ${fadeIn} 0.5s ease-out;
-`;
-
-const ToggleText = styled(Text)`
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #1890ff;
-  }
-`;
-
-const WelcomeText = styled(Title)`
-  color: white;
-  margin-bottom: 2rem;
-`;
 
 /**
  * Auth component for handling user authentication (sign up and sign in).
@@ -75,45 +23,49 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <Container>
-      <LeftPanel>
+    <div className="flex h-screen overflow-hidden">
+      {/* Left Panel */}
+      <div className="flex-1 flex flex-col justify-center items-center bg-background p-8 animate-in fade-in duration-500">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={formAnimation}
           transition={{ duration: 0.5 }}
+          className="w-full max-w-md"
         >
-          <Title
-            level={2}
-            style={{ marginBottom: "2rem", textAlign: "center" }}
-          >
+          <h2 className="text-3xl font-bold mb-8 text-center text-foreground">
             {isSignUp ? "Create an Account" : "Welcome Back"}
-          </Title>
+          </h2>
           <AuthForm
             isSignUp={isSignUp}
             isLoading={isLoading}
             onFinish={onFinish}
           />
           {error && (
-            <Alert
-              message={error}
-              type="error"
-              showIcon
-              style={{ marginBottom: "1rem" }}
-            />
+            <div className="mt-4 p-4 rounded-lg bg-destructive/10 border border-destructive/20 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
           )}
-          <ToggleText onClick={toggleAuthMode}>
+          <p
+            onClick={toggleAuthMode}
+            className="mt-4 text-center text-muted-foreground cursor-pointer transition-colors hover:text-primary"
+          >
             {isSignUp
               ? "Already have an account? Sign In"
               : "Don't have an account? Sign Up"}
-          </ToggleText>
+          </p>
         </motion.div>
-      </LeftPanel>
-      <RightPanel>
-        <WelcomeText level={1}>Welcome to ClassConnect</WelcomeText>
+      </div>
+
+      {/* Right Panel */}
+      <div className="flex-1 flex flex-col justify-center items-center bg-card text-card-foreground p-8 animate-in fade-in duration-500">
+        <h1 className="text-5xl font-bold mb-8 text-foreground">
+          Welcome to ClassConnect
+        </h1>
         <FeatureList />
-      </RightPanel>
-    </Container>
+      </div>
+    </div>
   );
 };
 

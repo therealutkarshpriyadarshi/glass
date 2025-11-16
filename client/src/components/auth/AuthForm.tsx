@@ -1,40 +1,9 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
-import { LockOutlined, MailOutlined, IdcardOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Lock, Mail, IdCard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import styled from "styled-components";
-
-const StyledForm = styled(Form)`
-  width: 100%;
-  max-width: 400px;
-
-  .ant-form-item {
-    margin-bottom: 1.5rem;
-  }
-
-  .ant-input-affix-wrapper {
-    border-radius: 50px;
-    padding: 12px 15px;
-  }
-
-  .ant-input-affix-wrapper > input.ant-input {
-    background: transparent;
-  }
-
-  .ant-form-item-explain-error {
-    padding-left: 15px;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  width: 100%;
-  height: 50px;
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface AuthFormProps {
   isSignUp: boolean;
@@ -42,12 +11,28 @@ interface AuthFormProps {
   onFinish: (values: unknown) => void;
 }
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
 /**
  * AuthForm component for handling user authentication (sign up and sign in).
  *
  * This component renders a form with fields for email and password,
  * and additional fields for first name, last name, and password confirmation when in sign up mode.
- * It uses Ant Design components for form elements and Framer Motion for animations.
+ * It uses shadcn/ui components for form elements and Framer Motion for animations.
  *
  * @component
  * @param {Object} props - The component props
@@ -60,15 +45,83 @@ const AuthForm: React.FC<AuthFormProps> = ({
   isLoading,
   onFinish,
 }) => {
-  const [form] = Form.useForm();
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  useEffect(() => {
+    // Clear name fields when switching from sign up to sign in
+    if (!isSignUp) {
+      setFormData((prev) => ({
+        ...prev,
+        firstName: "",
+        lastName: "",
+        confirmPassword: "",
+      }));
+      setErrors({});
+    }
+  }, [isSignUp]);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (isSignUp) {
+      if (!formData.firstName.trim()) {
+        newErrors.firstName = "Please input your first name!";
+      }
+      if (!formData.lastName.trim()) {
+        newErrors.lastName = "Please input your last name!";
+      }
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Please input your email!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address!";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Please input your password!";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long!";
+    }
+
+    if (isSignUp) {
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = "Please confirm your password!";
+      } else if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "The two passwords do not match!";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      onFinish(formData);
+    }
+  };
+
+  const handleChange = (field: keyof FormData) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
 
   return (
-    <StyledForm
-      form={form}
-      name="auth_form"
-      onFinish={onFinish}
-      layout="vertical"
-    >
+    <form onSubmit={handleSubmit} className="w-full max-w-md">
       <AnimatePresence>
         {isSignUp && (
           <motion.div
@@ -78,43 +131,91 @@ const AuthForm: React.FC<AuthFormProps> = ({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Form.Item
-              name="firstName"
-              rules={[
-                { required: true, message: "Please input your first name!" },
-              ]}
-            >
-              <Input prefix={<IdcardOutlined />} placeholder="First Name" />
-            </Form.Item>
-            <Form.Item
-              name="lastName"
-              rules={[
-                { required: true, message: "Please input your last name!" },
-              ]}
-            >
-              <Input prefix={<IdcardOutlined />} placeholder="Last Name" />
-            </Form.Item>
+            <div className="mb-6">
+              <Label htmlFor="firstName" className="sr-only">
+                First Name
+              </Label>
+              <div className="relative">
+                <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="firstName"
+                  type="text"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleChange("firstName")}
+                  className="pl-12 h-12 rounded-full"
+                />
+              </div>
+              {errors.firstName && (
+                <p className="mt-1 ml-4 text-sm text-destructive">
+                  {errors.firstName}
+                </p>
+              )}
+            </div>
+            <div className="mb-6">
+              <Label htmlFor="lastName" className="sr-only">
+                Last Name
+              </Label>
+              <div className="relative">
+                <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange("lastName")}
+                  className="pl-12 h-12 rounded-full"
+                />
+              </div>
+              {errors.lastName && (
+                <p className="mt-1 ml-4 text-sm text-destructive">
+                  {errors.lastName}
+                </p>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-      <Form.Item
-        name="email"
-        rules={[
-          { required: true, message: "Please input your email!" },
-          { type: "email", message: "Please enter a valid email address!" },
-        ]}
-      >
-        <Input prefix={<MailOutlined />} placeholder="Email" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[
-          { required: true, message: "Please input your password!" },
-          { min: 6, message: "Password must be at least 6 characters long!" },
-        ]}
-      >
-        <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-      </Form.Item>
+      <div className="mb-6">
+        <Label htmlFor="email" className="sr-only">
+          Email
+        </Label>
+        <div className="relative">
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange("email")}
+            className="pl-12 h-12 rounded-full"
+          />
+        </div>
+        {errors.email && (
+          <p className="mt-1 ml-4 text-sm text-destructive">{errors.email}</p>
+        )}
+      </div>
+      <div className="mb-6">
+        <Label htmlFor="password" className="sr-only">
+          Password
+        </Label>
+        <div className="relative">
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            id="password"
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange("password")}
+            className="pl-12 h-12 rounded-full"
+          />
+        </div>
+        {errors.password && (
+          <p className="mt-1 ml-4 text-sm text-destructive">
+            {errors.password}
+          </p>
+        )}
+      </div>
       <AnimatePresence>
         {isSignUp && (
           <motion.div
@@ -124,37 +225,38 @@ const AuthForm: React.FC<AuthFormProps> = ({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Form.Item
-              name="confirmPassword"
-              dependencies={["password"]}
-              rules={[
-                { required: true, message: "Please confirm your password!" },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error("The two passwords do not match!")
-                    );
-                  },
-                }),
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                placeholder="Confirm Password"
-              />
-            </Form.Item>
+            <div className="mb-6">
+              <Label htmlFor="confirmPassword" className="sr-only">
+                Confirm Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange("confirmPassword")}
+                  className="pl-12 h-12 rounded-full"
+                />
+              </div>
+              {errors.confirmPassword && (
+                <p className="mt-1 ml-4 text-sm text-destructive">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-      <Form.Item>
-        <StyledButton type="primary" htmlType="submit" loading={isLoading}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </StyledButton>
-      </Form.Item>
-    </StyledForm>
+      <Button
+        type="submit"
+        disabled={isLoading}
+        className="w-full h-12 rounded-full text-base font-bold uppercase tracking-wider"
+      >
+        {isLoading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+      </Button>
+    </form>
   );
 };
 
