@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupCourseRoutes(router *gin.Engine, db *gorm.DB) {
+func SetupCourseRoutes(router gin.IRouter, db *gorm.DB) {
 	courseService := services.NewCourseService(db)
 	courseHandler := handlers.NewCourseHandler(courseService)
 

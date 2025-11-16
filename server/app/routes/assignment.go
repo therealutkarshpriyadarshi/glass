@@ -7,7 +7,7 @@ import (
 	"server/app/services"
 )
 
-func SetupAssignmentRoutes(r *gin.Engine, db *gorm.DB) {
+func SetupAssignmentRoutes(r gin.IRouter, db *gorm.DB) {
 	assignmentService := services.NewAssignmentService(db)
 	assignmentHandler := handlers.NewAssignmentHandler(assignmentService)
 

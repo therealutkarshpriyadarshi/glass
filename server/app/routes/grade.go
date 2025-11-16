@@ -7,7 +7,7 @@ import (
 	"server/app/services"
 )
 
-func SetupGradeRoutes(r *gin.Engine, db *gorm.DB) {
+func SetupGradeRoutes(r gin.IRouter, db *gorm.DB) {
 	gradeService := services.NewGradeService(db)
 	gradeHandler := handlers.NewGradeHandler(gradeService)
 

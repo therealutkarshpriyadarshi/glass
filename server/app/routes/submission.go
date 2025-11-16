@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupSubmissionRoutes(r *gin.Engine, db *gorm.DB, firestore *firebase.CloudStorage) {
+func SetupSubmissionRoutes(r gin.IRouter, db *gorm.DB, firestore *firebase.CloudStorage) {
 	service := services.NewSubmissionService(db, firestore)
 	handler := handlers.NewSubmissionHandler(service)
 	{
