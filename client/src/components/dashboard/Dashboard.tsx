@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BookOpen, Calendar, MessageSquare, Bell } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { fetchDashboardData } from "../../store/dasboard/slice";
+import { fetchDashboardData } from "../../store/dashboard/slice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { Spinner } from "@/components/ui/spinner";

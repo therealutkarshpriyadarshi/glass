@@ -8,44 +8,8 @@ interface CoursesState {
   error: string | null;
 }
 
-const courseExamples: Course[] = [
-  {
-    id: 1,
-    name: "Introduction to Programming",
-    description: "Learn the basics of programming with JavaScript",
-    startDate: "2023-09-01",
-    endDate: "2023-12-15",
-    maxStudents: 30,
-    difficulty: "Beginner",
-    category: "Computer Science",
-    isActive: true,
-  },
-  {
-    id: 2,
-    name: "Advanced Machine Learning",
-    description: "Explore advanced topics in machine learning and AI",
-    startDate: "2023-10-01",
-    endDate: "2024-03-31",
-    maxStudents: 20,
-    difficulty: "Advanced",
-    category: "Artificial Intelligence",
-    isActive: true,
-  },
-  {
-    id: 3,
-    name: "Data Structures and Algorithms",
-    description: "Master the fundamentals of data structures and algorithms",
-    startDate: "2023-11-01",
-    endDate: "2024-04-30",
-    maxStudents: 25,
-    difficulty: "Intermediate",
-    category: "Computer Science",
-    isActive: true,
-  },
-];
-
 const initialState: CoursesState = {
-  courses: courseExamples,
+  courses: [],
   loading: false,
   error: null,
 };

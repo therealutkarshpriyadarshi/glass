@@ -1,9 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
+import { Navigate, useLocation } from "react-router-dom";
 import AuthForm from "./AuthForm";
 import FeatureList from "./FeatureList";
 import { useAuth } from "../../hooks/auth";
+import { useAppSelector } from "@/store/hooks";
 
 /**
  * Auth component for handling user authentication (sign up and sign in).
@@ -16,6 +18,15 @@ import { useAuth } from "../../hooks/auth";
  */
 const Auth: React.FC = () => {
   const { isSignUp, isLoading, error, onFinish, toggleAuthMode } = useAuth();
+  const { user, token } = useAppSelector((state) => state.auth);
+  const location = useLocation();
+
+  // Redirect if already authenticated
+  const isAuthenticated = !!token && !!user;
+  if (isAuthenticated) {
+    const from = (location.state as any)?.from?.pathname || "/";
+    return <Navigate to={from} replace />;
+  }
 
   const formAnimation = {
     hidden: { opacity: 0, y: 20 },

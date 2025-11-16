@@ -1,6 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 
-const baseURL = "http://localhost:8080/api";
+/**
+ * Get API base URL from environment variables with fallback
+ */
+const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+const timeout = Number(import.meta.env.VITE_API_TIMEOUT) || 10000;
 
 /**
  * Creates an Axios instance with predefined configuration.
@@ -9,7 +13,7 @@ const baseURL = "http://localhost:8080/api";
  */
 const axiosInstance: AxiosInstance = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout,
   headers: {
     "Content-Type": "application/json",
   },
@@ -24,6 +28,29 @@ export const setAuthToken = (token: string | null) => {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   else delete axiosInstance.defaults.headers.common["Authorization"];
 };
+
+/**
+ * Response interceptor to handle token expiration
+ */
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    // Handle 401 Unauthorized errors (token expired or invalid)
+    if (error.response?.status === 401) {
+      // Clear auth token
+      setAuthToken(null);
+
+      // Remove token from localStorage if it exists
+      localStorage.removeItem("token");
+
+      // Redirect to login page if not already there
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 /**
  * Makes an API call using the configured Axios instance.

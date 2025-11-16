@@ -7,6 +7,7 @@ import UserCourses from "./components/courses/list/UserCourses";
 import CourseOverview from "./components/courses/CourseOverview";
 import CreateCourseComponent from "./components/courses/create/CreateCourseComponent";
 import SuspenseWrapper from "./SuspenseWrapper";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -16,33 +17,41 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: (
-          <SuspenseWrapper>
-            <Dashboard />
-          </SuspenseWrapper>
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <Dashboard />
+            </SuspenseWrapper>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/courses",
         element: (
-          <SuspenseWrapper>
-            <UserCourses />
-          </SuspenseWrapper>
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <UserCourses />
+            </SuspenseWrapper>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/courses/create",
         element: (
-          <SuspenseWrapper>
-            <CreateCourseComponent />
-          </SuspenseWrapper>
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <CreateCourseComponent />
+            </SuspenseWrapper>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/courses/:courseId",
         element: (
-          <SuspenseWrapper>
-            <CourseOverview />
-          </SuspenseWrapper>
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <CourseOverview />
+            </SuspenseWrapper>
+          </ProtectedRoute>
         ),
       },
     ],

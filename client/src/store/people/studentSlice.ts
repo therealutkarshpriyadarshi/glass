@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Student } from "./type";
-import students from "../../examples/students";
 
 interface StudentState {
   students: Student[];
 }
 
 const initialState: StudentState = {
-  students: students,
+  students: [],
 };
 
 const studentSlice = createSlice({
