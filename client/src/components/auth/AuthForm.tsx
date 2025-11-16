@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Lock, Mail, IdCard } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,7 +121,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <AnimatePresence>
         {isSignUp && (
           <motion.div
@@ -130,88 +130,77 @@ const AuthForm: React.FC<AuthFormProps> = ({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
+            className="space-y-4"
           >
-            <div className="mb-6">
-              <Label htmlFor="firstName" className="sr-only">
-                First Name
-              </Label>
-              <div className="relative">
-                <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
                 <Input
                   id="firstName"
                   type="text"
-                  placeholder="First Name"
+                  placeholder="John"
                   value={formData.firstName}
                   onChange={handleChange("firstName")}
-                  className="pl-12 h-12 rounded-full"
+                  className={errors.firstName ? "border-destructive" : ""}
                 />
+                {errors.firstName && (
+                  <p className="text-xs text-destructive">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
-              {errors.firstName && (
-                <p className="mt-1 ml-4 text-sm text-destructive">
-                  {errors.firstName}
-                </p>
-              )}
-            </div>
-            <div className="mb-6">
-              <Label htmlFor="lastName" className="sr-only">
-                Last Name
-              </Label>
-              <div className="relative">
-                <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
                 <Input
                   id="lastName"
                   type="text"
-                  placeholder="Last Name"
+                  placeholder="Doe"
                   value={formData.lastName}
                   onChange={handleChange("lastName")}
-                  className="pl-12 h-12 rounded-full"
+                  className={errors.lastName ? "border-destructive" : ""}
                 />
+                {errors.lastName && (
+                  <p className="text-xs text-destructive">
+                    {errors.lastName}
+                  </p>
+                )}
               </div>
-              {errors.lastName && (
-                <p className="mt-1 ml-4 text-sm text-destructive">
-                  {errors.lastName}
-                </p>
-              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="mb-6">
-        <Label htmlFor="email" className="sr-only">
-          Email
-        </Label>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
         <div className="relative">
-          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             id="email"
             type="email"
-            placeholder="Email"
+            placeholder="you@example.com"
             value={formData.email}
             onChange={handleChange("email")}
-            className="pl-12 h-12 rounded-full"
+            className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
           />
         </div>
         {errors.email && (
-          <p className="mt-1 ml-4 text-sm text-destructive">{errors.email}</p>
+          <p className="text-xs text-destructive">{errors.email}</p>
         )}
       </div>
-      <div className="mb-6">
-        <Label htmlFor="password" className="sr-only">
-          Password
-        </Label>
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             id="password"
             type="password"
-            placeholder="Password"
+            placeholder="••••••••"
             value={formData.password}
             onChange={handleChange("password")}
-            className="pl-12 h-12 rounded-full"
+            className={`pl-10 ${errors.password ? "border-destructive" : ""}`}
           />
         </div>
         {errors.password && (
-          <p className="mt-1 ml-4 text-sm text-destructive">
+          <p className="text-xs text-destructive">
             {errors.password}
           </p>
         )}
@@ -225,23 +214,21 @@ const AuthForm: React.FC<AuthFormProps> = ({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="mb-6">
-              <Label htmlFor="confirmPassword" className="sr-only">
-                Confirm Password
-              </Label>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="confirmPassword"
                   type="password"
-                  placeholder="Confirm Password"
+                  placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={handleChange("confirmPassword")}
-                  className="pl-12 h-12 rounded-full"
+                  className={`pl-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
                 />
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 ml-4 text-sm text-destructive">
+                <p className="text-xs text-destructive">
                   {errors.confirmPassword}
                 </p>
               )}
@@ -252,9 +239,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-12 rounded-full text-base font-bold uppercase tracking-wider"
+        className="w-full mt-6"
       >
-        {isLoading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+        {isLoading ? "Loading..." : isSignUp ? "Create Account" : "Sign In"}
       </Button>
     </form>
   );
