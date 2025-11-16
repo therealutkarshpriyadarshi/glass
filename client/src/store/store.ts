@@ -4,7 +4,7 @@ import studentReducer from "./people/studentSlice";
 import authReducer from "./auth/authSlice";
 import assignmentReducer from "./assignments/slice";
 import activityAssignmentReducer from "./activity/assignmentSlice";
-import dashboardReducer from "./dasboard/slice";
+import dashboardReducer from "./dashboard/slice";
 import coursesReducer from "./courses/slice";
 import materialReducer from "./materials/slice";
 import quizReducer from "./quiz/slice";

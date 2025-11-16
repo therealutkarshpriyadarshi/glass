@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Assignment } from "./type";
 import { fetchAssignments, createAssignment, deleteAssignment } from "./api";
-import { exampleAssignments } from "../../examples/assignments";
 
 interface AssignmentState {
   assignments: Assignment[];
@@ -10,7 +9,7 @@ interface AssignmentState {
 }
 
 const initialState: AssignmentState = {
-  assignments: exampleAssignments,
+  assignments: [],
   loading: false,
   error: null,
 };
