@@ -32,7 +32,23 @@ func InitDB() *gorm.DB {
 	}
 
 	// Auto Migrate the models
-	err = db.AutoMigrate(&models.Course{})
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Course{},
+		&models.Assignment{},
+		&models.Enrollment{},
+		&models.Submission{},
+		&models.Grade{},
+		&models.Quiz{},
+		&models.Question{},
+		&models.Option{},
+		&models.QuizSubmission{},
+		&models.Answer{},
+		&models.Material{},
+		&models.MaterialFile{},
+		&models.SubmissionFile{},
+		&models.AssignmentFile{},
+	)
 	if err != nil {
 		log.Fatalf("Failed to auto migrate models: %v", err)
 	}

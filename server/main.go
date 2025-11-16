@@ -70,13 +70,13 @@ func main() {
 
 	// Set up routes under /api prefix
 	routes.SetUpUserRoutes(api, db, []byte(secret), expiration)
-	routes.SetupCourseRoutes(api, db)
-	routes.SetupGradeRoutes(api, db)
-	routes.SetupAssignmentRoutes(api, db)
-	routes.SetupEnrollmentRoutes(api, db)
+	routes.SetupCourseRoutes(api, db, secret)
+	routes.SetupGradeRoutes(api, db, secret)
+	routes.SetupAssignmentRoutes(api, db, secret)
+	routes.SetupEnrollmentRoutes(api, db, secret)
 	if cs != nil {
-		routes.SetupSubmissionRoutes(api, db, cs)
-		routes.SetupMaterialRoutes(api, db, cs)
+		routes.SetupSubmissionRoutes(api, db, cs, secret)
+		routes.SetupMaterialRoutes(api, db, cs, secret)
 	}
 	routes.SetupQuizRoutes(api, db, secret)
 
