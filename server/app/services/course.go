@@ -24,7 +24,59 @@ func NewCourseService(db *gorm.DB) *CourseService {
 }
 
 func (s *CourseService) CreateCourse(c *models.Course) error {
-	return s.db.Create(c).Error
+	// Generate unique invitation code
+	var code string
+	var err error
+	maxRetries := 10
+	for i := 0; i < maxRetries; i++ {
+		code, err = generateInvitationCode()
+		if err != nil {
+			return err
+		}
+
+		// Check if code is unique
+		var existing models.Course
+		err = s.db.Where("invitation_code = ?", code).First(&existing).Error
+		if err == gorm.ErrRecordNotFound {
+			// Code is unique, break the loop
+			break
+		} else if err != nil {
+			// Database error
+			return err
+		}
+		// Code exists, retry
+	}
+
+	// Assign invitation code to course
+	c.InvitationCode = code
+
+	// Create course in a transaction
+	tx := s.db.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	// Create the course
+	if err := tx.Create(c).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Auto-enroll creator as teacher with approved status
+	enrollment := models.Enrollment{
+		UserID:   c.CreatorID,
+		CourseID: c.ID,
+		Role:     models.RoleTeacher,
+		Status:   models.EnrollmentStatusApproved,
+	}
+
+	if err := tx.Create(&enrollment).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Commit transaction
+	return tx.Commit().Error
 }
 
 func (s *CourseService) GetCourse() ([]models.Course, error) {
