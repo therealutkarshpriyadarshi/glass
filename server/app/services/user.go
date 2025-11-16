@@ -6,7 +6,7 @@ import (
 	"server/app/models"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 )
 
@@ -70,10 +70,13 @@ func (s *UserService) AuthenticateUser(email, password string) (string, error) {
 		return "", apperror.InvalidCredential{}
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	claims := jwt.MapClaims{
 		"user_id": user.ID,
-		"exp":     time.Now().Add(s.tokenExpiry).Unix(),
-	})
+		"exp":     jwt.NewNumericDate(time.Now().Add(s.tokenExpiry)),
+		"iat":     jwt.NewNumericDate(time.Now()),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	tokenString, err := token.SignedString(s.jwtSecret)
 	if err != nil {

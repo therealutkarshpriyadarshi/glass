@@ -17,8 +17,13 @@ func SetUpUserRoutes(r *gin.Engine, db *gorm.DB, secret []byte, expiration time.
 	secretString := string(secret)
 	{
 		router := r.Group("/users")
-		router.POST("/login", handler.Login)
-		router.POST("/register", handler.Register)
+		// Apply rate limiting to auth endpoints to prevent brute force attacks
+		router.POST("/login",
+			middlewares.AuthRateLimitMiddleware(),
+			handler.Login)
+		router.POST("/register",
+			middlewares.AuthRateLimitMiddleware(),
+			handler.Register)
 		router.GET("/profile",
 			middlewares.AuthMiddleware(secretString),
 			handler.GetProfile)
