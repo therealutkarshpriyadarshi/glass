@@ -1,6 +1,7 @@
-import React from "react";
-import { User, Bell, Settings, LogOut } from "lucide-react";
+import React, { useState } from "react";
+import { User, Bell, Settings, LogOut, Plus, UserPlus } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { logout } from "./store/auth/authSlice";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -12,6 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import JoinCourse from "./components/courses/JoinCourse";
 
 /**
  * DashboardHeader component
@@ -21,9 +24,19 @@ import { Badge } from "@/components/ui/badge";
  */
 const DashboardHeader: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [joinDialogOpen, setJoinDialogOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
+  };
+
+  const handleCreateCourse = () => {
+    navigate("/courses/new");
+  };
+
+  const handleJoinCourse = () => {
+    setJoinDialogOpen(true);
   };
 
   return (
@@ -32,6 +45,23 @@ const DashboardHeader: React.FC = () => {
         <div className="text-2xl font-bold text-primary">ClassConnect</div>
 
         <div className="flex items-center gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleJoinCourse}
+            className="gap-2"
+          >
+            <UserPlus className="h-4 w-4" />
+            Join Course
+          </Button>
+          <Button
+            size="sm"
+            onClick={handleCreateCourse}
+            className="gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Create Course
+          </Button>
           <div className="relative cursor-pointer p-2 text-muted-foreground hover:text-foreground transition-colors">
             <Bell className="h-5 w-5" />
             <Badge
@@ -70,6 +100,7 @@ const DashboardHeader: React.FC = () => {
           </DropdownMenu>
         </div>
       </div>
+      <JoinCourse open={joinDialogOpen} onOpenChange={setJoinDialogOpen} />
     </header>
   );
 };

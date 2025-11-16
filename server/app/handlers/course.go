@@ -26,12 +26,24 @@ func (h *CourseHandler) CreateCourse(c *gin.Context) {
 		return
 	}
 
+	// Get the authenticated user ID and set as creator
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+	course.CreatorID = userID.(uint)
+
 	if err := h.courseService.CreateCourse(&course); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create course"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, course)
+	c.JSON(http.StatusCreated, gin.H{
+		"course":          course,
+		"invitation_code": course.InvitationCode,
+		"message":         "Course created successfully",
+	})
 }
 
 // GetCourses handles retrieving all courses

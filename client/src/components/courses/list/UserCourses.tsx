@@ -18,8 +18,7 @@ const UserCourses: React.FC = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const not = false;
-    if (not) dispatch(fetchUserCourses());
+    dispatch(fetchUserCourses());
   }, [dispatch]);
 
   useEffect(() => {

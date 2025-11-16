@@ -6,6 +6,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import UserCourses from "./components/courses/list/UserCourses";
 import CourseOverview from "./components/courses/CourseOverview";
 import CreateCourseComponent from "./components/courses/create/CreateCourseComponent";
+import CreateCourse from "./components/courses/create/CreateCourse";
 import SuspenseWrapper from "./SuspenseWrapper";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
@@ -30,6 +31,16 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <SuspenseWrapper>
               <UserCourses />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/new",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <CreateCourse />
             </SuspenseWrapper>
           </ProtectedRoute>
         ),

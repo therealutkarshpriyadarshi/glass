@@ -17,8 +17,7 @@ const Dashboard: React.FC = () => {
   } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
-    const notLogin = false;
-    if (notLogin) dispatch(fetchDashboardData());
+    dispatch(fetchDashboardData());
   }, [dispatch]);
 
   if (isLoading) {
