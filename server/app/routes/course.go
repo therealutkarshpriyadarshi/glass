@@ -16,10 +16,23 @@ func SetupCourseRoutes(router gin.IRouter, db *gorm.DB, secret string) {
 	courseRoutes := router.Group("/courses")
 	courseRoutes.Use(middlewares.AuthMiddleware(secret))
 	{
+		// Public (authenticated) endpoints
 		courseRoutes.POST("/", courseHandler.CreateCourse)
 		courseRoutes.GET("/", courseHandler.GetCourses)
 		courseRoutes.GET("/:id", courseHandler.GetCourseByID)
-		courseRoutes.PUT("/:id", courseHandler.UpdateCourse)
-		courseRoutes.DELETE("/:id", courseHandler.DeleteCourse)
+
+		// Protected endpoints - require course ownership (teacher/admin)
+		courseRoutes.PUT("/:id",
+			middlewares.CourseOwnershipMiddleware(db),
+			courseHandler.UpdateCourse)
+		courseRoutes.DELETE("/:id",
+			middlewares.CourseOwnershipMiddleware(db),
+			courseHandler.DeleteCourse)
+		courseRoutes.POST("/:id/invitation-code",
+			middlewares.CourseOwnershipMiddleware(db),
+			courseHandler.GenerateInvitationCode)
+		courseRoutes.GET("/:id/students",
+			middlewares.CourseOwnershipMiddleware(db),
+			courseHandler.GetCourseStudents)
 	}
 }

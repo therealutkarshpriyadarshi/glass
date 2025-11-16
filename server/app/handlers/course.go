@@ -100,3 +100,40 @@ func (h *CourseHandler) DeleteCourse(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Course deleted successfully"})
 }
+
+// GenerateInvitationCode generates a new invitation code for a course
+func (h *CourseHandler) GenerateInvitationCode(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid course ID"})
+		return
+	}
+
+	code, err := h.courseService.GenerateInvitationCode(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate invitation code"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"invitation_code": code,
+		"message":         "Invitation code generated successfully",
+	})
+}
+
+// GetCourseStudents retrieves all students enrolled in a course
+func (h *CourseHandler) GetCourseStudents(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid course ID"})
+		return
+	}
+
+	enrollments, err := h.courseService.GetCourseStudents(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve students"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"students": enrollments})
+}

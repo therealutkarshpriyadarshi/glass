@@ -227,3 +227,22 @@ func (m *MaterialService) removeFiles(tx *gorm.DB, materialID uint, fileIDs []ui
 
 	return nil
 }
+
+// GetMaterialsByCourse retrieves all materials associated with a specific course.
+//
+// Parameters:
+//   - courseID: The ID of the course to retrieve materials for.
+//
+// Returns:
+//   - []models.Material: A slice of materials associated with the course.
+//   - error: An error if the retrieval fails, nil otherwise.
+func (m *MaterialService) GetMaterialsByCourse(courseID uint) ([]models.Material, error) {
+	var materials []models.Material
+	err := m.db.Where("course_id = ?", courseID).
+		Preload("Files").
+		Find(&materials).Error
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving materials for course: %w", err)
+	}
+	return materials, nil
+}

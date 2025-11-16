@@ -120,3 +120,28 @@ func (s *UserService) ChangePassword(userID uint, oldPassword, newPassword strin
 	user.Password = newPassword
 	return s.UpdateUser(user)
 }
+
+// GetEnrolledCourses retrieves all courses a user is enrolled in with approved status.
+func (s *UserService) GetEnrolledCourses(userID uint) ([]models.Course, error) {
+	var courses []models.Course
+	err := s.db.Joins("JOIN enrollments ON enrollments.course_id = courses.id").
+		Where("enrollments.user_id = ? AND enrollments.status = ?", userID, models.EnrollmentStatusApproved).
+		Preload("Creator").
+		Find(&courses).Error
+	if err != nil {
+		return nil, err
+	}
+	return courses, nil
+}
+
+// GetCreatedCourses retrieves all courses created by a user.
+func (s *UserService) GetCreatedCourses(userID uint) ([]models.Course, error) {
+	var courses []models.Course
+	err := s.db.Where("creator_id = ?", userID).
+		Preload("Creator").
+		Find(&courses).Error
+	if err != nil {
+		return nil, err
+	}
+	return courses, nil
+}
