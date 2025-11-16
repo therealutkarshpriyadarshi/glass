@@ -129,3 +129,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Go build artifacts
+glass-server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib

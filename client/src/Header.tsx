@@ -1,57 +1,17 @@
 import React from "react";
-import { Layout, Avatar, Dropdown, Badge, MenuProps } from "antd";
-import {
-  UserOutlined,
-  BellOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
-import styled from "styled-components";
+import { User, Bell, Settings, LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "./store/auth/authSlice";
-
-const { Header } = Layout;
-
-const StyledHeader = styled(Header)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  color: #1890ff;
-`;
-
-const RightMenu = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const IconButton = styled.span`
-  padding: 0 12px;
-  cursor: pointer;
-  font-size: 20px;
-  color: #8c8c8c;
-  transition: color 0.3s;
-
-  &:hover {
-    color: #1890ff;
-  }
-`;
-
-const StyledAvatar = styled(Avatar)`
-  cursor: pointer;
-  background-color: #1890ff;
-`;
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 /**
  * DashboardHeader component
@@ -66,44 +26,51 @@ const DashboardHeader: React.FC = () => {
     dispatch(logout());
   };
 
-  const userMenu: MenuProps["items"] = [
-    {
-      key: "profile",
-      icon: <UserOutlined />,
-      label: "Profile",
-    },
-    {
-      key: "settings",
-      icon: <SettingOutlined />,
-      label: "Settings",
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "logout",
-      icon: <LogoutOutlined />,
-      label: "Logout",
-      onClick: handleLogout,
-    },
-  ];
-
   return (
-    <StyledHeader>
-      <Logo>ClassConnect</Logo>
-      <RightMenu>
-        <Badge count={5} offset={[-5, 5]}>
-          <IconButton>
-            <BellOutlined />
-          </IconButton>
-        </Badge>
-        <Dropdown menu={{ items: userMenu }} trigger={["click"]}>
-          <IconButton>
-            <StyledAvatar icon={<UserOutlined />} />
-          </IconButton>
-        </Dropdown>
-      </RightMenu>
-    </StyledHeader>
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-card shadow-sm">
+      <div className="flex h-16 items-center justify-between px-6">
+        <div className="text-2xl font-bold text-primary">ClassConnect</div>
+
+        <div className="flex items-center gap-4">
+          <div className="relative cursor-pointer p-2 text-muted-foreground hover:text-foreground transition-colors">
+            <Bell className="h-5 w-5" />
+            <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+            >
+              5
+            </Badge>
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="cursor-pointer bg-primary hover:opacity-90 transition-opacity">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  <User className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    </header>
   );
 };
 

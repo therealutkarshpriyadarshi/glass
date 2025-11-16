@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { message } from "antd";
+import { toast } from "@/components/ui/use-toast";
 import { apiCall } from "../../api/server";
 import { Assignment } from "./type";
 
@@ -19,10 +19,17 @@ export const createAssignment = createAsyncThunk(
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      message.success("Assignment created successfully");
+      toast({
+        title: "Success",
+        description: "Assignment created successfully",
+      });
       return response;
     } catch (error) {
-      message.error("Failed to create assignment");
+      toast({
+        title: "Error",
+        description: "Failed to create assignment",
+        variant: "destructive",
+      });
       return rejectWithValue(error);
     }
   }
@@ -58,10 +65,17 @@ export const deleteAssignment = createAsyncThunk(
   async (id: number, { rejectWithValue }) => {
     try {
       await apiCall({ url: `/assignments/${id}`, method: "DELETE" });
-      message.success("Assignment deleted successfully");
+      toast({
+        title: "Success",
+        description: "Assignment deleted successfully",
+      });
       return id;
     } catch (error) {
-      message.error("Failed to delete assignment");
+      toast({
+        title: "Error",
+        description: "Failed to delete assignment",
+        variant: "destructive",
+      });
       return rejectWithValue(error);
     }
   }

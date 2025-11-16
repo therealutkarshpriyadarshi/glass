@@ -1,31 +1,4 @@
 import React from "react";
-import { Typography } from "antd";
-import styled, { keyframes } from "styled-components";
-
-const { Text } = Typography;
-
-const slideIn = keyframes`
-  from { transform: translateX(-50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-`;
-
-const StyledList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const FeatureItem = styled.li`
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  animation: ${slideIn} 0.5s ease-out;
-`;
-
-const FeatureIcon = styled.span`
-  margin-right: 10px;
-  font-size: 1.2rem;
-`;
 
 const features = [
   { icon: "✅", text: "Interactive online classrooms" },
@@ -35,14 +8,18 @@ const features = [
 ];
 
 const FeatureList: React.FC = () => (
-  <StyledList>
-    {features.map((feature) => (
-      <FeatureItem key={feature.text}>
-        <FeatureIcon>{feature.icon}</FeatureIcon>
-        <Text style={{ color: "white" }}>{feature.text}</Text>
-      </FeatureItem>
+  <ul className="list-none p-0 m-0">
+    {features.map((feature, index) => (
+      <li
+        key={feature.text}
+        className="mb-4 flex items-center animate-in slide-in-from-left duration-500"
+        style={{ animationDelay: `${index * 100}ms` }}
+      >
+        <span className="mr-3 text-xl">{feature.icon}</span>
+        <span className="text-foreground">{feature.text}</span>
+      </li>
     ))}
-  </StyledList>
+  </ul>
 );
 
 export default FeatureList;

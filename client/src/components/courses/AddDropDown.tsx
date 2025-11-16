@@ -1,13 +1,19 @@
 import React from "react";
-import { Dropdown, MenuProps, Button } from "antd";
 import {
-  SoundOutlined,
-  FileOutlined,
-  EditOutlined,
-  PlusOutlined,
-  CarryOutFilled,
-} from "@ant-design/icons";
+  Volume2,
+  FileText,
+  Edit,
+  Plus,
+  CheckSquare,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 /**
  * AddDropDown component provides a dropdown menu for creating various course-related items.
@@ -21,26 +27,9 @@ const AddDropDown: React.FC = () => {
   /**
    * Handles the click event on a menu item and navigates to the create page.
    *
-   * @param {string} key - The key of the clicked menu item.
+   * @param {string} compType - The type of component to create.
    */
-  const handleMenuClick = (key: string) => {
-    let compType: string;
-    switch (key) {
-      case "1":
-        compType = "announcement";
-        break;
-      case "2":
-        compType = "assignment";
-        break;
-      case "3":
-        compType = "material";
-        break;
-      case "4":
-        compType = "quiz";
-        break;
-      default:
-        compType = "course";
-    }
+  const handleMenuClick = (compType: string) => {
     navigate("/courses/create", {
       state: {
         compType: compType,
@@ -48,44 +37,33 @@ const AddDropDown: React.FC = () => {
     });
   };
 
-  /**
-   * Menu items for the dropdown.
-   *
-   * @type {MenuProps["items"]}
-   */
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: "Announcement",
-      icon: <SoundOutlined />,
-      onClick: () => handleMenuClick("1"),
-    },
-    {
-      key: "2",
-      label: "Assignment",
-      icon: <CarryOutFilled />,
-      onClick: () => handleMenuClick("2"),
-    },
-    {
-      key: "3",
-      label: "Material",
-      icon: <FileOutlined />,
-      onClick: () => handleMenuClick("3"),
-    },
-    {
-      key: "4",
-      label: "Quiz",
-      icon: <EditOutlined />,
-      onClick: () => handleMenuClick("4"),
-    },
-  ];
-
   return (
-    <Dropdown menu={{ items }}>
-      <Button icon={<PlusOutlined />} type="primary">
-        Create Something 😊
-      </Button>
-    </Dropdown>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="gap-2">
+          <Plus className="h-4 w-4" />
+          Create Something
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => handleMenuClick("announcement")}>
+          <Volume2 className="mr-2 h-4 w-4" />
+          Announcement
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleMenuClick("assignment")}>
+          <CheckSquare className="mr-2 h-4 w-4" />
+          Assignment
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleMenuClick("material")}>
+          <FileText className="mr-2 h-4 w-4" />
+          Material
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleMenuClick("quiz")}>
+          <Edit className="mr-2 h-4 w-4" />
+          Quiz
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

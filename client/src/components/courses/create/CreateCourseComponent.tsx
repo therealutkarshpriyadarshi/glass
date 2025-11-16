@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Card, Segmented } from "antd";
 import { useLocation } from "react-router-dom";
 import CreateAssignment from "./CreateAssignment";
 import CreateMaterial from "./CreateMaterial";
 import Quiz from "../quiz/Quiz";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type ComponentType = "course" | "quiz" | "material" | "assignment";
 
@@ -20,37 +21,26 @@ const CreateCourseComponent: React.FC = () => {
   if (location.state) componentType = location.state.compType as ComponentType;
   const [component, setComponent] = useState<ComponentType>(componentType);
 
-  /**
-   * Array of segment options for the Segmented component
-   * @type {Array<{label: string, value: string, component?: JSX.Element}>}
-   */
-  const segments = [
-    {
-      label: "Assignment",
-      value: "assignment",
-      component: <CreateAssignment />,
-    },
-    { label: "Material", value: "material", component: <CreateMaterial /> },
-    { label: "Quiz", value: "quiz" },
-  ];
-
   return (
-    <Card
-      title={`Create ${component} 😊`}
-      bordered={false}
-      activeTabKey={component}
-      onTabChange={(key) => setComponent(key as ComponentType)}
-      extra={
-        <Segmented
-          options={segments}
-          onChange={(key) => setComponent(key as ComponentType)}
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Create {component}</CardTitle>
+        <Tabs
           value={component}
-        />
-      }
-    >
-      {component === "assignment" ? <CreateAssignment /> : null}
-      {component === "material" ? <CreateMaterial /> : null}
-      {component === "quiz" ? <Quiz /> : null}
+          onValueChange={(value) => setComponent(value as ComponentType)}
+        >
+          <TabsList>
+            <TabsTrigger value="assignment">Assignment</TabsTrigger>
+            <TabsTrigger value="material">Material</TabsTrigger>
+            <TabsTrigger value="quiz">Quiz</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        {component === "assignment" && <CreateAssignment />}
+        {component === "material" && <CreateMaterial />}
+        {component === "quiz" && <Quiz />}
+      </CardContent>
     </Card>
   );
 };

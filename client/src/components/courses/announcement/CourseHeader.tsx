@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./header.css";
-import { Image, Typography } from "antd";
 
 interface CourseHeaderProps {
   title: string;
 }
-
-const { Title } = Typography;
 
 const CourseHeader: React.FC<CourseHeaderProps> = ({ title }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -27,35 +23,17 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({ title }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: 200,
-        padding: 0,
-        overflow: "hidden",
-        borderRadius: "30px",
-      }}
-    >
-      <Title
-        className="title"
-        level={2}
-        style={{ color: "#ff7", cursor: "pointer" }}
-      >
+    <div className="relative w-full h-[200px] p-0 overflow-hidden rounded-3xl">
+      <h2 className="absolute top-4 left-4 z-10 text-3xl font-bold text-yellow-300 cursor-pointer">
         {title}
-      </Title>
-      <Image
+      </h2>
+      <img
         src={imageUrl}
         alt="Course landscape"
-        preview={true}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          borderRadius: "10px",
-        }}
+        className="w-full h-full object-cover rounded-xl cursor-pointer"
+        onClick={() => window.open(imageUrl, "_blank")}
       />
-      <div className="image-mask"></div>
+      <div className="absolute inset-0 bg-black/30 rounded-xl" />
     </div>
   );
 };

@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Typography, Space, Tag } from "antd";
-import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import {
-  BookOutlined,
-  CalendarOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { BookOpen, Calendar, Users } from "lucide-react";
 import type { Course } from "../../../store/courses/types";
 import { fetchUserCourses } from "../../../store/courses/slice";
 import CourseSearchAndFilters, { FilterState } from "./SearchFilter";
-
-const { Title, Text } = Typography;
-const { Meta } = Card;
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 /**
  * UserCourses component displays a list of courses for the user.
@@ -68,9 +61,9 @@ const UserCourses: React.FC = () => {
     new Set(courses.map((course) => course.category))
   );
 
-  if (loading) return <div>Loading courses...</div>;
+  if (loading) return <div className="text-foreground">Loading courses...</div>;
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div className="text-destructive">Error: {error}</div>;
 
   return (
     <div>
@@ -79,71 +72,65 @@ const UserCourses: React.FC = () => {
         onFilterChange={handleFilterChange}
         categories={categories}
       />
-      <Row gutter={[16, 16]}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredCourses.map((course: Course) => (
-          <Col xs={24} sm={24} md={12} lg={12} xl={12} key={course.id}>
-            <StyledCard
-              cover={<CoverImage svgContent={generateDarkSVG()} />}
+          <Card
+            key={course.id}
+            className="mb-4 transition-all duration-300 rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 cursor-pointer border-border"
+          >
+            <div
+              className="h-[200px] bg-cover bg-center rounded-t-xl"
               style={{
-                cursor: "pointer",
+                backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
+                  generateDarkSVG()
+                )}")`,
               }}
-            >
-              <Meta
-                title={<CourseTitle level={4}>{course.name}</CourseTitle>}
-                description={
-                  <Space direction="vertical" size="small">
-                    <Text type="secondary">{course.description}</Text>
-                    <Space>
-                      <Tag icon={<BookOutlined />} color="blue">
-                        {course.category}
-                      </Tag>
-                      <Tag icon={<CalendarOutlined />} color="green">
-                        {course.startDate} - {course.endDate}
-                      </Tag>
-                      <Tag icon={<TeamOutlined />} color="orange">
-                        {course.maxStudents} students max
-                      </Tag>
-                    </Space>
-                    <Text>Difficulty: {course.difficulty}</Text>
-                    <Text>
-                      Status: {course.isActive ? "Active" : "Inactive"}
-                    </Text>
-                  </Space>
-                }
-              />
-            </StyledCard>
-          </Col>
+            />
+            <CardContent className="p-6">
+              <h4 className="text-xl font-semibold mb-4 text-foreground">
+                {course.name}
+              </h4>
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {course.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1 bg-blue-500/10 text-blue-400 border-blue-500/20"
+                  >
+                    <BookOpen className="h-3 w-3" />
+                    {course.category}
+                  </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1 bg-green-500/10 text-green-400 border-green-500/20"
+                  >
+                    <Calendar className="h-3 w-3" />
+                    {course.startDate} - {course.endDate}
+                  </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1 bg-orange-500/10 text-orange-400 border-orange-500/20"
+                  >
+                    <Users className="h-3 w-3" />
+                    {course.maxStudents} students max
+                  </Badge>
+                </div>
+                <p className="text-sm text-foreground">
+                  Difficulty: {course.difficulty}
+                </p>
+                <p className="text-sm text-foreground">
+                  Status: {course.isActive ? "Active" : "Inactive"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         ))}
-      </Row>
+      </div>
     </div>
   );
 };
-
-const StyledCard = styled(Card)`
-  margin-bottom: 16px;
-  transition: all 0.3s;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-  &:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    transform: translateY(-4px);
-  }
-`;
-
-const CourseTitle = styled(Title)`
-  margin-bottom: 0 !important;
-`;
-
-const CoverImage = styled.div<{ svgContent: string }>`
-  height: 200px;
-  background-image: url("data:image/svg+xml,${(props) =>
-    encodeURIComponent(props.svgContent)}");
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px 8px 0 0;
-`;
 
 /**
  * Generates a random dark-themed SVG for course card backgrounds.

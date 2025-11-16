@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import { Input, Button, Drawer, Space, Select, Switch } from "antd";
-import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
-import styled from "styled-components";
-
-const { Search } = Input;
-const { Option } = Select;
+import { Search, Filter } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface CourseSearchAndFiltersProps {
   onSearch: (value: string) => void;
@@ -35,6 +48,7 @@ const CourseSearchAndFilters: React.FC<CourseSearchAndFiltersProps> = ({
   categories,
 }) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState<FilterState>({
     category: "All",
     difficulty: "All",
@@ -52,87 +66,102 @@ const CourseSearchAndFilters: React.FC<CourseSearchAndFiltersProps> = ({
     onFilterChange(updatedFilters);
   };
 
+  const handleSearch = () => {
+    onSearch(searchValue);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
-    <>
-      <SearchContainer>
-        <StyledSearch
+    <div className="flex justify-center items-center gap-4 pb-6 sticky top-0 z-50 bg-background pt-4">
+      <div className="relative w-[60%] max-w-[600px]">
+        <Input
+          type="text"
           placeholder="Search courses"
-          onSearch={onSearch}
-          enterButton={<SearchOutlined />}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyPress={handleKeyPress}
+          className="pr-10"
         />
         <Button
-          icon={<FilterOutlined />}
-          onClick={() => setIsFilterVisible(true)}
+          variant="ghost"
+          size="icon"
+          className="absolute right-0 top-0 h-full"
+          onClick={handleSearch}
         >
-          Filters
+          <Search className="h-4 w-4" />
         </Button>
-      </SearchContainer>
+      </div>
 
-      <Drawer
-        title="Course Filters"
-        placement="right"
-        onClose={() => setIsFilterVisible(false)}
-        open={isFilterVisible}
-      >
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <div>
-            <h4>Category</h4>
-            <Select
-              style={{ width: "100%" }}
-              value={filters.category}
-              onChange={(value) => handleFilterChange({ category: value })}
-            >
-              <Option value="All">All Categories</Option>
-              {categories.map((category) => (
-                <Option key={category} value={category}>
-                  {category}
-                </Option>
-              ))}
-            </Select>
-          </div>
+      <Sheet open={isFilterVisible} onOpenChange={setIsFilterVisible}>
+        <SheetTrigger asChild>
+          <Button variant="outline">
+            <Filter className="mr-2 h-4 w-4" />
+            Filters
+          </Button>
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Course Filters</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-6 mt-6">
+            <div className="space-y-2">
+              <Label htmlFor="category">Category</Label>
+              <Select
+                value={filters.category}
+                onValueChange={(value) => handleFilterChange({ category: value })}
+              >
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div>
-            <h4>Difficulty</h4>
-            <Select
-              style={{ width: "100%" }}
-              value={filters.difficulty}
-              onChange={(value) => handleFilterChange({ difficulty: value })}
-            >
-              <Option value="All">All Difficulties</Option>
-              <Option value="Easy">Easy</Option>
-              <Option value="Medium">Medium</Option>
-              <Option value="Hard">Hard</Option>
-            </Select>
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="difficulty">Difficulty</Label>
+              <Select
+                value={filters.difficulty}
+                onValueChange={(value) => handleFilterChange({ difficulty: value })}
+              >
+                <SelectTrigger id="difficulty">
+                  <SelectValue placeholder="Select difficulty" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Difficulties</SelectItem>
+                  <SelectItem value="Easy">Easy</SelectItem>
+                  <SelectItem value="Medium">Medium</SelectItem>
+                  <SelectItem value="Hard">Hard</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div>
-            <h4>Status</h4>
-            <Switch
-              checked={filters.isActive}
-              onChange={(checked) => handleFilterChange({ isActive: checked })}
-              checkedChildren="Active"
-              unCheckedChildren="All"
-            />
+            <div className="flex items-center justify-between">
+              <Label htmlFor="status" className="flex-1">
+                Show Active Only
+              </Label>
+              <Switch
+                id="status"
+                checked={filters.isActive}
+                onCheckedChange={(checked) => handleFilterChange({ isActive: checked })}
+              />
+            </div>
           </div>
-        </Space>
-      </Drawer>
-    </>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 
-const SearchContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  padding-bottom: 26px;
-  position: sticky;
-  top: 0;
-  z-index: 1000; // Ensure it stays on top of other elements
-`;
-
-const StyledSearch = styled(Search)`
-  width: 60%;
-  max-width: 600px;
-`;
 export default CourseSearchAndFilters;
