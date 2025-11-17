@@ -3,19 +3,20 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   EDUCATIONAL BLUE DARK THEME
-   Clean, elegant dark theme for ClassConnect LMS
+   ONE DARK PRO THEME
+   VSCode's beloved dark theme for ClassConnect LMS
    ============================================
 
-   Color Palette:
-   - Background: Deep slate (#0F172A) - Main app background
-   - Cards: Slate 800 (#1E293B) - Elevated surfaces
-   - Primary: Blue 500 (#3B82F6) - Main actions, links
-   - Secondary: Indigo 500 (#6366F1) - Alternative actions
-   - Accent: Cyan 500 (#06B6D4) - Highlights, hover states
-   - Success: Emerald 500 (#10B981) - Success states
-   - Warning: Amber 500 (#F59E0B) - Warning states
-   - Destructive: Red 500 (#EF4444) - Errors, delete actions
+   Color Palette (One Dark Pro):
+   - Background: Charcoal (#282c34) - Main app background
+   - Surface: Dark Grey (#21252b) - Elevated surfaces
+   - Primary: Blue (#61afef) - Main actions, links
+   - Secondary: Purple (#c678dd) - Alternative actions
+   - Accent: Cyan (#56b6c2) - Highlights, hover states
+   - Success: Green (#98c379) - Success states
+   - Warning: Yellow (#e5c07b) - Warning states
+   - Error: Red (#e06c75) - Errors, delete actions
+   - Orange: Orange (#d19a66) - Additional accent
 
    Usage:
    - Use semantic tokens (bg-primary, text-foreground, etc.)
@@ -33,86 +34,86 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  /* Educational Blue Dark Theme Colors */
+  /* One Dark Pro Theme Colors */
   /* Background & Surfaces */
-  --color-background: 222 47% 11%;           /* Deep slate background #0F172A */
-  --color-foreground: 210 40% 98%;           /* Near white text #F8FAFC */
-  --color-card: 217 33% 17%;                 /* Elevated card surface #1E293B */
-  --color-card-foreground: 210 40% 98%;      /* Card text */
-  --color-popover: 217 33% 17%;              /* Popover background */
-  --color-popover-foreground: 210 40% 98%;   /* Popover text */
+  --color-background: 220 13% 18%;           /* Charcoal background #282c34 */
+  --color-foreground: 220 14% 71%;           /* Light grey text #abb2bf */
+  --color-card: 220 13% 28%;                 /* Elevated card surface #3e4451 */
+  --color-card-foreground: 220 14% 71%;      /* Card text */
+  --color-popover: 220 13% 28%;              /* Popover background */
+  --color-popover-foreground: 220 14% 71%;   /* Popover text */
 
-  /* Primary - Educational Blue */
-  --color-primary: 217 91% 60%;              /* Bright blue #3B82F6 */
-  --color-primary-foreground: 210 40% 98%;   /* White text on primary */
+  /* Primary - One Dark Blue */
+  --color-primary: 207 82% 66%;              /* Blue #61afef */
+  --color-primary-foreground: 220 13% 18%;   /* Dark text on primary */
 
-  /* Secondary - Indigo */
-  --color-secondary: 239 84% 67%;            /* Indigo #6366F1 */
-  --color-secondary-foreground: 210 40% 98%; /* White text on secondary */
+  /* Secondary - Purple */
+  --color-secondary: 286 60% 67%;            /* Purple #c678dd */
+  --color-secondary-foreground: 220 13% 18%; /* Dark text on secondary */
 
   /* Muted - Subtle backgrounds */
-  --color-muted: 217 33% 17%;                /* Same as card for consistency */
-  --color-muted-foreground: 215 16% 60%;     /* Muted text #94A3B8 */
+  --color-muted: 220 13% 28%;                /* Same as card for consistency */
+  --color-muted-foreground: 220 10% 55%;     /* Muted text #5c6370 */
 
   /* Accent - Cyan */
-  --color-accent: 189 94% 42%;               /* Cyan accent #06B6D4 */
-  --color-accent-foreground: 210 40% 98%;    /* White text on accent */
+  --color-accent: 187 47% 55%;               /* Cyan accent #56b6c2 */
+  --color-accent-foreground: 220 13% 18%;    /* Dark text on accent */
 
   /* Destructive - Red for errors/delete */
-  --color-destructive: 0 72% 60%;            /* Red #EF4444 */
-  --color-destructive-foreground: 210 40% 98%; /* White text on destructive */
+  --color-destructive: 355 65% 65%;          /* Red #e06c75 */
+  --color-destructive-foreground: 220 13% 18%; /* Dark text on destructive */
 
   /* Success - Green for success states */
-  --color-success: 160 84% 39%;              /* Emerald green #10B981 */
-  --color-success-foreground: 210 40% 98%;   /* White text on success */
+  --color-success: 95 38% 62%;               /* Green #98c379 */
+  --color-success-foreground: 220 13% 18%;   /* Dark text on success */
 
-  /* Warning - Amber for warnings */
-  --color-warning: 38 92% 50%;               /* Amber #F59E0B */
-  --color-warning-foreground: 222 47% 11%;   /* Dark text on warning */
+  /* Warning - Yellow for warnings */
+  --color-warning: 39 67% 69%;               /* Yellow #e5c07b */
+  --color-warning-foreground: 220 13% 18%;   /* Dark text on warning */
 
   /* Borders & Inputs */
-  --color-border: 217 33% 24%;               /* Subtle borders #334155 */
-  --color-input: 217 33% 24%;                /* Input borders */
-  --color-ring: 217 91% 60%;                 /* Focus ring (primary blue) */
+  --color-border: 220 13% 28%;               /* Subtle borders */
+  --color-input: 220 13% 28%;                /* Input borders */
+  --color-ring: 207 82% 66%;                 /* Focus ring (primary blue) */
 
-  /* Chart Colors - Educational Blue palette */
-  --color-chart-1: 217 91% 60%;              /* Blue */
-  --color-chart-2: 160 84% 39%;              /* Green */
-  --color-chart-3: 38 92% 50%;               /* Amber */
-  --color-chart-4: 239 84% 67%;              /* Indigo */
-  --color-chart-5: 189 94% 42%;              /* Cyan */
+  /* Chart Colors - One Dark Pro palette */
+  --color-chart-1: 207 82% 66%;              /* Blue */
+  --color-chart-2: 95 38% 62%;               /* Green */
+  --color-chart-3: 39 67% 69%;               /* Yellow */
+  --color-chart-4: 286 60% 67%;              /* Purple */
+  --color-chart-5: 187 47% 55%;              /* Cyan */
 }
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-    --card: 217 33% 17%;
-    --card-foreground: 210 40% 98%;
-    --popover: 217 33% 17%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 239 84% 67%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 16% 60%;
-    --accent: 189 94% 42%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 72% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --success: 160 84% 39%;
-    --success-foreground: 210 40% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 11%;
-    --border: 217 33% 24%;
-    --input: 217 33% 24%;
-    --ring: 217 91% 60%;
-    --chart-1: 217 91% 60%;
-    --chart-2: 160 84% 39%;
-    --chart-3: 38 92% 50%;
-    --chart-4: 239 84% 67%;
-    --chart-5: 189 94% 42%;
+    --background: 220 13% 18%;
+    --foreground: 220 14% 71%;
+    --card: 220 13% 28%;
+    --card-foreground: 220 14% 71%;
+    --popover: 220 13% 28%;
+    --popover-foreground: 220 14% 71%;
+    --primary: 207 82% 66%;
+    --primary-foreground: 220 13% 18%;
+    --secondary: 286 60% 67%;
+    --secondary-foreground: 220 13% 18%;
+    --muted: 220 13% 28%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 187 47% 55%;
+    --accent-foreground: 220 13% 18%;
+    --destructive: 355 65% 65%;
+    --destructive-foreground: 220 13% 18%;
+    --success: 95 38% 62%;
+    --success-foreground: 220 13% 18%;
+    --warning: 39 67% 69%;
+    --warning-foreground: 220 13% 18%;
+    --border: 220 13% 28%;
+    --input: 220 13% 28%;
+    --ring: 207 82% 66%;
+    --chart-1: 207 82% 66%;
+    --chart-2: 95 38% 62%;
+    --chart-3: 39 67% 69%;
+    --chart-4: 286 60% 67%;
+    --chart-5: 187 47% 55%;
     --radius: 0.5rem;
   }
 }
@@ -155,25 +156,25 @@ body {
 }
 
 :root {
-  --sidebar: hsl(0 0% 98%);
-  --sidebar-foreground: hsl(240 5.3% 26.1%);
-  --sidebar-primary: hsl(240 5.9% 10%);
-  --sidebar-primary-foreground: hsl(0 0% 98%);
-  --sidebar-accent: hsl(240 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --sidebar-border: hsl(220 13% 91%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: hsl(220 13% 15%);
+  --sidebar-foreground: hsl(220 14% 71%);
+  --sidebar-primary: hsl(207 82% 66%);
+  --sidebar-primary-foreground: hsl(220 13% 18%);
+  --sidebar-accent: hsl(220 13% 28%);
+  --sidebar-accent-foreground: hsl(220 14% 71%);
+  --sidebar-border: hsl(220 13% 28%);
+  --sidebar-ring: hsl(207 82% 66%);
 }
 
 .dark {
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: hsl(220 13% 15%);
+  --sidebar-foreground: hsl(220 14% 71%);
+  --sidebar-primary: hsl(207 82% 66%);
+  --sidebar-primary-foreground: hsl(220 13% 18%);
+  --sidebar-accent: hsl(220 13% 28%);
+  --sidebar-accent-foreground: hsl(220 14% 71%);
+  --sidebar-border: hsl(220 13% 28%);
+  --sidebar-ring: hsl(207 82% 66%);
 }
 
 @theme inline {
