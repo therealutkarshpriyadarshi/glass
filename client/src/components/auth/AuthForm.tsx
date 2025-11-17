@@ -66,11 +66,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   const getPasswordStrengthColor = (strength: number): string => {
-    if (strength === 0) return "bg-white/10";
-    if (strength === 1) return "bg-white/20";
-    if (strength === 2) return "bg-white/40";
-    if (strength === 3) return "bg-white/60";
-    return "bg-white/80";
+    if (strength === 0) return "bg-muted/20";
+    if (strength === 1) return "bg-destructive/60";
+    if (strength === 2) return "bg-warning/60";
+    if (strength === 3) return "bg-accent/60";
+    return "bg-success/60";
   };
 
   const getPasswordStrengthText = (strength: number): string => {
@@ -168,15 +168,15 @@ const AuthForm: React.FC<AuthFormProps> = ({
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-white/60 text-sm">First Name</Label>
+                <Label htmlFor="firstName" className="text-foreground/70 text-sm">First Name</Label>
                 <Input
                   id="firstName"
                   type="text"
                   placeholder="John"
                   value={formData.firstName}
                   onChange={handleChange("firstName")}
-                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
-                    errors.firstName ? "border-red-500/50" : ""
+                  className={`bg-muted/30 border-border text-foreground placeholder:text-muted-foreground/50 focus-visible:border-primary/40 focus-visible:ring-0 transition-colors ${
+                    errors.firstName ? "border-destructive/50" : ""
                   }`}
                 />
                 {errors.firstName && (
@@ -186,15 +186,15 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-white/60 text-sm">Last Name</Label>
+                <Label htmlFor="lastName" className="text-foreground/70 text-sm">Last Name</Label>
                 <Input
                   id="lastName"
                   type="text"
                   placeholder="Doe"
                   value={formData.lastName}
                   onChange={handleChange("lastName")}
-                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
-                    errors.lastName ? "border-red-500/50" : ""
+                  className={`bg-muted/30 border-border text-foreground placeholder:text-muted-foreground/50 focus-visible:border-primary/40 focus-visible:ring-0 transition-colors ${
+                    errors.lastName ? "border-destructive/50" : ""
                   }`}
                 />
                 {errors.lastName && (
@@ -208,15 +208,15 @@ const AuthForm: React.FC<AuthFormProps> = ({
         )}
       </AnimatePresence>
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-white/60 text-sm">Email</Label>
+        <Label htmlFor="email" className="text-foreground/70 text-sm">Email</Label>
         <Input
           id="email"
           type="email"
           placeholder="you@example.com"
           value={formData.email}
           onChange={handleChange("email")}
-          className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
-            errors.email ? "border-red-500/50" : ""
+          className={`bg-muted/30 border-border text-foreground placeholder:text-muted-foreground/50 focus-visible:border-primary/40 focus-visible:ring-0 transition-colors ${
+            errors.email ? "border-destructive/50" : ""
           }`}
         />
         {errors.email && (
@@ -224,15 +224,15 @@ const AuthForm: React.FC<AuthFormProps> = ({
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-white/60 text-sm">Password</Label>
+        <Label htmlFor="password" className="text-foreground/70 text-sm">Password</Label>
         <Input
           id="password"
           type="password"
           placeholder="••••••••"
           value={formData.password}
           onChange={handleChange("password")}
-          className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
-            errors.password ? "border-red-500/50" : ""
+          className={`bg-muted/30 border-border text-foreground placeholder:text-muted-foreground/50 focus-visible:border-primary/40 focus-visible:ring-0 transition-colors ${
+            errors.password ? "border-destructive/50" : ""
           }`}
         />
         {isSignUp && formData.password && (
@@ -242,7 +242,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 <motion.div
                   key={i}
                   className={`flex-1 rounded-full ${
-                    i < passwordStrength ? getPasswordStrengthColor(passwordStrength) : "bg-white/5"
+                    i < passwordStrength ? getPasswordStrengthColor(passwordStrength) : "bg-muted/20"
                   }`}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: i < passwordStrength ? 1 : 0 }}
@@ -251,7 +251,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               ))}
             </div>
             {passwordStrength > 0 && (
-              <p className="text-xs text-white/40">
+              <p className="text-xs text-muted-foreground">
                 {getPasswordStrengthText(passwordStrength)} password
               </p>
             )}
@@ -273,7 +273,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             transition={{ duration: 0.3 }}
           >
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-white/60 text-sm">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="text-foreground/70 text-sm">Confirm Password</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
@@ -281,11 +281,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={handleChange("confirmPassword")}
-                  className={`bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:border-white/20 focus-visible:ring-0 transition-colors ${
+                  className={`bg-muted/30 border-border text-foreground placeholder:text-muted-foreground/50 focus-visible:border-primary/40 focus-visible:ring-0 transition-colors ${
                     errors.confirmPassword
-                      ? "border-red-500/50"
+                      ? "border-destructive/50"
                       : formData.confirmPassword && formData.password === formData.confirmPassword
-                      ? "border-white/30"
+                      ? "border-success/40"
                       : ""
                   }`}
                 />
@@ -295,7 +295,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 500, damping: 25 }}
                   >
-                    <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+                    <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-success" />
                   </motion.div>
                 )}
               </div>
@@ -311,12 +311,12 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full mt-6 bg-white text-black hover:bg-white/90 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full mt-6 bg-primary text-primary-foreground hover:bg-primary/90 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <span className="flex items-center gap-2">
             <motion.div
-              className="h-4 w-4 border-2 border-black/20 border-t-black rounded-full"
+              className="h-4 w-4 border-2 border-primary-foreground/20 border-t-primary-foreground rounded-full"
               animate={{ rotate: 360 }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />

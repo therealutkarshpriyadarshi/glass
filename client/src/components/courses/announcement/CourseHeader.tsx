@@ -33,7 +33,7 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({ title }) => {
         className="w-full h-full object-cover rounded-xl cursor-pointer"
         onClick={() => window.open(imageUrl, "_blank")}
       />
-      <div className="absolute inset-0 bg-black/30 rounded-xl" />
+      <div className="absolute inset-0 bg-background/30 rounded-xl" />
     </div>
   );
 };
