@@ -73,6 +73,7 @@ func (h *MaterialHandler) CreateMaterial(c *gin.Context) {
 	var material struct {
 		Title       string   `form:"title" binding:"required"`
 		Description string   `form:"description" binding:"required"`
+		CourseId    uint     `form:"courseId" binding:"required"`
 		Files       []string `form:"files" binding:"required"`
 	}
 
@@ -95,6 +96,7 @@ func (h *MaterialHandler) CreateMaterial(c *gin.Context) {
 	mat := &models.Material{
 		Title:       material.Title,
 		Description: material.Description,
+		CourseId:    material.CourseId,
 	}
 
 	mat, err = h.serv.CreateMaterial(mat, files)

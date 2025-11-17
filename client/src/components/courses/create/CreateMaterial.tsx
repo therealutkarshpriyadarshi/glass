@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { createMaterial } from "@/store/materials/slice";
+import { toast } from "sonner";
 import Description from "./components/Description";
 import FileUpload from "./components/FileUpload";
 import CourseDropdown from "./components/CourseDropdown";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 /**
  * CreateMaterial component for creating new course material
@@ -16,6 +21,10 @@ import { Button } from "@/components/ui/button";
  * @returns {JSX.Element} Rendered CreateMaterial component
  */
 const CreateMaterial: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { loading, uploadProgress } = useAppSelector((state) => state.materials);
+
   const [title, setTitle] = useState("");
   const [markdown, setMarkdown] = useState("");
   const [course, setCourse] = useState("");
@@ -27,21 +36,36 @@ const CreateMaterial: React.FC = (): JSX.Element => {
     if (!title) newErrors.title = "Please input the title!";
     if (!markdown) newErrors.description = "Please input the description!";
     if (!course) newErrors.course = "Please select a course!";
+    if (files.length === 0) newErrors.files = "Please upload at least one file!";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      const values = {
-        title,
-        description: markdown,
-        course,
-        files,
-      };
-      console.log("Form values:", values);
-      // Handle form submission
+      try {
+        await dispatch(
+          createMaterial({
+            courseId: course,
+            title,
+            description: markdown,
+            files,
+          })
+        ).unwrap();
+
+        toast.success("Material created successfully!");
+
+        // Reset form
+        setTitle("");
+        setMarkdown("");
+        setFiles([]);
+
+        // Navigate back to course overview
+        navigate(`/courses/${course}`);
+      } catch (error: any) {
+        toast.error(error || "Failed to create material");
+      }
     }
   };
 
@@ -105,12 +129,32 @@ const CreateMaterial: React.FC = (): JSX.Element => {
           <div>
             <Label>Add Files</Label>
             <FileUpload onFilesSelected={handleUpload} />
+            {errors.files && (
+              <p className="text-sm text-destructive mt-1">{errors.files}</p>
+            )}
+            {files.length > 0 && (
+              <p className="text-sm text-muted-foreground mt-1">
+                {files.length} file(s) selected
+              </p>
+            )}
           </div>
         </div>
       </div>
 
+      {uploadProgress > 0 && uploadProgress < 100 && (
+        <div className="mt-4">
+          <Label>Upload Progress</Label>
+          <Progress value={uploadProgress} className="mt-2" />
+          <p className="text-sm text-muted-foreground mt-1">
+            {uploadProgress}% uploaded
+          </p>
+        </div>
+      )}
+
       <div className="mt-6">
-        <Button type="submit">Create Material</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Material"}
+        </Button>
       </div>
     </form>
   );

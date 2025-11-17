@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Announcement from "./announcement/Announcement";
 import CoursePeople from "./people/CoursePeople";
+import FilesView from "./files/FilesView";
 import AddDropDown from "./AddDropDown";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -57,7 +58,7 @@ const CourseOverview: React.FC = () => {
             <Announcement />
           </TabsContent>
           <TabsContent value="2">
-            {/* Files content */}
+            <FilesView />
           </TabsContent>
           <TabsContent value="3">
             <CoursePeople />
