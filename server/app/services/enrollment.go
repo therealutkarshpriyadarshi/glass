@@ -174,6 +174,18 @@ func (s *EnrollmentService) GetPendingEnrollments(courseID uint) ([]models.Enrol
 	return enrollments, nil
 }
 
+// GetEnrollmentByID retrieves an enrollment by its ID with preloaded user and course
+func (s *EnrollmentService) GetEnrollmentByID(enrollmentID uint) (*models.Enrollment, error) {
+	var enrollment models.Enrollment
+	if err := s.db.Preload("User").Preload("Course").First(&enrollment, enrollmentID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, EntityNotFound(fmt.Errorf("enrollment with id %d not found", enrollmentID))
+		}
+		return nil, err
+	}
+	return &enrollment, nil
+}
+
 // IsAdmin checks if the given user is the admin (creator) of the specified course.
 //
 // Parameters:

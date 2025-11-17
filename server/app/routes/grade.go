@@ -10,7 +10,8 @@ import (
 
 func SetupGradeRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	gradeService := services.NewGradeService(db)
-	gradeHandler := handlers.NewGradeHandler(gradeService)
+	notificationService := services.NewNotificationService(db)
+	gradeHandler := handlers.NewGradeHandler(gradeService, notificationService)
 
 	grades := r.Group("/grades")
 	grades.Use(middlewares.AuthMiddleware(secret))

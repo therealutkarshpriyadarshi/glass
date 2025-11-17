@@ -6,4 +6,5 @@ const (
 	SubmissionsTable    = "submissions"
 	GradeTable          = "grades"
 	SubmissionFileTable = "submission_files"
+	NotificationsTable  = "notifications"
 )

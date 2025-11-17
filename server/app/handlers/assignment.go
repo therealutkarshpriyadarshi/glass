@@ -11,13 +11,15 @@ import (
 
 // AssignmentHandler handles HTTP requests related to assignment operations.
 type AssignmentHandler struct {
-	serv *services.AssignmentService
+	serv         *services.AssignmentService
+	notifService *services.NotificationService
 }
 
 // NewAssignmentHandler creates a new AssignmentHandler with the given AssignmentService.
-func NewAssignmentHandler(assignmentService *services.AssignmentService) *AssignmentHandler {
+func NewAssignmentHandler(assignmentService *services.AssignmentService, notifService *services.NotificationService) *AssignmentHandler {
 	return &AssignmentHandler{
-		serv: assignmentService,
+		serv:         assignmentService,
+		notifService: notifService,
 	}
 }
 
@@ -202,6 +204,16 @@ func (h *AssignmentHandler) PublishAssignment(c *gin.Context) {
 	if err := h.serv.Publish(id); err != nil {
 		SendError(err, c)
 		return
+	}
+
+	// Send notifications to all students in the course
+	assignment, err := h.serv.Get(id)
+	if err == nil {
+		_ = h.notifService.NotifyAssignmentPublished(
+			assignment.ID,
+			assignment.CourseID,
+			assignment.Title,
+		)
 	}
 
 	HandleOk(c, "Assignment published successfully")
