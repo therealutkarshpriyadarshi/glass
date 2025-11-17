@@ -74,6 +74,7 @@ func main() {
 	routes.SetupGradeRoutes(api, db, secret)
 	routes.SetupAssignmentRoutes(api, db, secret)
 	routes.SetupEnrollmentRoutes(api, db, secret)
+	routes.SetupDashboardRoutes(api, db, secret)
 	if cs != nil {
 		routes.SetupSubmissionRoutes(api, db, cs, secret)
 		routes.SetupMaterialRoutes(api, db, cs, secret)
