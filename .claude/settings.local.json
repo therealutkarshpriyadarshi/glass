@@ -9,7 +9,8 @@
       "Bash(docker-compose:*)",
       "Bash(timeout 5 sh -c \"sleep 3 && docker-compose -f compose.dev.yaml logs server\" 2)",
       "Bash(nul)",
-      "Bash(timeout 8 sh:*)"
+      "Bash(timeout 8 sh:*)",
+      "Bash(docker system prune:*)"
     ],
     "deny": [],
     "ask": []
