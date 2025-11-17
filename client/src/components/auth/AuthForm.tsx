@@ -180,7 +180,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   }`}
                 />
                 {errors.firstName && (
-                  <p className="text-xs text-red-500/80">
+                  <p className="text-xs text-destructive/80">
                     {errors.firstName}
                   </p>
                 )}
@@ -198,7 +198,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   }`}
                 />
                 {errors.lastName && (
-                  <p className="text-xs text-red-500/80">
+                  <p className="text-xs text-destructive/80">
                     {errors.lastName}
                   </p>
                 )}
@@ -220,7 +220,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           }`}
         />
         {errors.email && (
-          <p className="text-xs text-red-500/80">{errors.email}</p>
+          <p className="text-xs text-destructive/80">{errors.email}</p>
         )}
       </div>
       <div className="space-y-2">
@@ -258,7 +258,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           </div>
         )}
         {errors.password && (
-          <p className="text-xs text-red-500/80">
+          <p className="text-xs text-destructive/80">
             {errors.password}
           </p>
         )}
@@ -300,7 +300,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 )}
               </div>
               {errors.confirmPassword && (
-                <p className="text-xs text-red-500/80">
+                <p className="text-xs text-destructive/80">
                   {errors.confirmPassword}
                 </p>
               )}

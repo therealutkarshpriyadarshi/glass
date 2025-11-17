@@ -16,8 +16,8 @@ const MaterialOverview: React.FC<MaterialOverviewProps> = ({ materials }) => {
           className="p-4 border-b border-border transition-colors hover:bg-accent/50 cursor-pointer"
         >
           <div className="flex items-start gap-4">
-            <Avatar className="h-10 w-10 flex items-center justify-center bg-green-500">
-              <FileText className="h-5 w-5 text-white" />
+            <Avatar className="h-10 w-10 flex items-center justify-center bg-accent">
+              <FileText className="h-5 w-5 text-accent-foreground" />
             </Avatar>
             <div className="flex-1 min-w-0">
               <h4 className="text-lg font-semibold text-foreground mb-2">

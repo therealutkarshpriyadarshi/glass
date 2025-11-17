@@ -64,7 +64,7 @@ const Dashboard: React.FC = () => {
           <Card className="text-center">
             <CardContent className="pt-6">
               <div className="flex flex-col items-center gap-2">
-                <Calendar className="h-8 w-8 text-green-500" />
+                <Calendar className="h-8 w-8 text-accent" />
                 <p className="text-sm text-muted-foreground">
                   Upcoming Assignments
                 </p>
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
           <Card className="text-center">
             <CardContent className="pt-6">
               <div className="flex flex-col items-center gap-2">
-                <MessageSquare className="h-8 w-8 text-yellow-500" />
+                <MessageSquare className="h-8 w-8 text-secondary" />
                 <p className="text-sm text-muted-foreground">New Messages</p>
                 <p className="text-3xl font-bold text-foreground">
                   {courseStats.newMessages}
@@ -142,8 +142,8 @@ const Dashboard: React.FC = () => {
               <div className="space-y-4">
                 {recentAnnouncements.map((item, index) => (
                   <div key={index} className="flex items-start gap-4">
-                    <Avatar className="h-10 w-10 flex items-center justify-center bg-green-500">
-                      <Bell className="h-5 w-5 text-white" />
+                    <Avatar className="h-10 w-10 flex items-center justify-center bg-accent">
+                      <Bell className="h-5 w-5 text-accent-foreground" />
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <a

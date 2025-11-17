@@ -1,65 +1,116 @@
 @import "tailwindcss";
 
+/* ============================================
+   EDUCATIONAL BLUE DARK THEME
+   Clean, elegant dark theme for ClassConnect LMS
+   ============================================
+
+   Color Palette:
+   - Background: Deep slate (#0F172A) - Main app background
+   - Cards: Slate 800 (#1E293B) - Elevated surfaces
+   - Primary: Blue 500 (#3B82F6) - Main actions, links
+   - Secondary: Indigo 500 (#6366F1) - Alternative actions
+   - Accent: Cyan 500 (#06B6D4) - Highlights, hover states
+   - Success: Emerald 500 (#10B981) - Success states
+   - Warning: Amber 500 (#F59E0B) - Warning states
+   - Destructive: Red 500 (#EF4444) - Errors, delete actions
+
+   Usage:
+   - Use semantic tokens (bg-primary, text-foreground, etc.)
+   - All colors use HSL format for easy manipulation
+   - Focus rings use primary blue for consistency
+   ============================================ */
+
 @theme {
+  /* Typography */
   --font-sans: "Cascadia Code", monospace;
 
+  /* Border Radius */
   --radius: 0.5rem;
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --color-background: 222.2 84% 4.9%;
-  --color-foreground: 210 40% 98%;
-  --color-card: 222.2 84% 4.9%;
-  --color-card-foreground: 210 40% 98%;
-  --color-popover: 222.2 84% 4.9%;
-  --color-popover-foreground: 210 40% 98%;
-  --color-primary: 210 40% 98%;
-  --color-primary-foreground: 222.2 47.4% 11.2%;
-  --color-secondary: 217.2 32.6% 17.5%;
-  --color-secondary-foreground: 210 40% 98%;
-  --color-muted: 217.2 32.6% 17.5%;
-  --color-muted-foreground: 215 20.2% 65.1%;
-  --color-accent: 217.2 32.6% 17.5%;
-  --color-accent-foreground: 210 40% 98%;
-  --color-destructive: 0 62.8% 30.6%;
-  --color-destructive-foreground: 210 40% 98%;
-  --color-border: 217.2 32.6% 17.5%;
-  --color-input: 217.2 32.6% 17.5%;
-  --color-ring: 212.7 26.8% 83.9%;
-  --color-chart-1: 220 70% 50%;
-  --color-chart-2: 160 60% 45%;
-  --color-chart-3: 30 80% 55%;
-  --color-chart-4: 280 65% 60%;
-  --color-chart-5: 340 75% 55%;
+  /* Educational Blue Dark Theme Colors */
+  /* Background & Surfaces */
+  --color-background: 222 47% 11%;           /* Deep slate background #0F172A */
+  --color-foreground: 210 40% 98%;           /* Near white text #F8FAFC */
+  --color-card: 217 33% 17%;                 /* Elevated card surface #1E293B */
+  --color-card-foreground: 210 40% 98%;      /* Card text */
+  --color-popover: 217 33% 17%;              /* Popover background */
+  --color-popover-foreground: 210 40% 98%;   /* Popover text */
+
+  /* Primary - Educational Blue */
+  --color-primary: 217 91% 60%;              /* Bright blue #3B82F6 */
+  --color-primary-foreground: 210 40% 98%;   /* White text on primary */
+
+  /* Secondary - Indigo */
+  --color-secondary: 239 84% 67%;            /* Indigo #6366F1 */
+  --color-secondary-foreground: 210 40% 98%; /* White text on secondary */
+
+  /* Muted - Subtle backgrounds */
+  --color-muted: 217 33% 17%;                /* Same as card for consistency */
+  --color-muted-foreground: 215 16% 60%;     /* Muted text #94A3B8 */
+
+  /* Accent - Cyan */
+  --color-accent: 189 94% 42%;               /* Cyan accent #06B6D4 */
+  --color-accent-foreground: 210 40% 98%;    /* White text on accent */
+
+  /* Destructive - Red for errors/delete */
+  --color-destructive: 0 72% 60%;            /* Red #EF4444 */
+  --color-destructive-foreground: 210 40% 98%; /* White text on destructive */
+
+  /* Success - Green for success states */
+  --color-success: 160 84% 39%;              /* Emerald green #10B981 */
+  --color-success-foreground: 210 40% 98%;   /* White text on success */
+
+  /* Warning - Amber for warnings */
+  --color-warning: 38 92% 50%;               /* Amber #F59E0B */
+  --color-warning-foreground: 222 47% 11%;   /* Dark text on warning */
+
+  /* Borders & Inputs */
+  --color-border: 217 33% 24%;               /* Subtle borders #334155 */
+  --color-input: 217 33% 24%;                /* Input borders */
+  --color-ring: 217 91% 60%;                 /* Focus ring (primary blue) */
+
+  /* Chart Colors - Educational Blue palette */
+  --color-chart-1: 217 91% 60%;              /* Blue */
+  --color-chart-2: 160 84% 39%;              /* Green */
+  --color-chart-3: 38 92% 50%;               /* Amber */
+  --color-chart-4: 239 84% 67%;              /* Indigo */
+  --color-chart-5: 189 94% 42%;              /* Cyan */
 }
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 217 33% 17%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 217 33% 17%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 239 84% 67%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 16% 60%;
+    --accent: 189 94% 42%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72% 60%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --success: 160 84% 39%;
+    --success-foreground: 210 40% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+    --border: 217 33% 24%;
+    --input: 217 33% 24%;
+    --ring: 217 91% 60%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 160 84% 39%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 239 84% 67%;
+    --chart-5: 189 94% 42%;
     --radius: 0.5rem;
   }
 }

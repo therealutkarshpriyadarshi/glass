@@ -107,7 +107,7 @@ const SubmissionsList: React.FC = () => {
 
   const getStatusBadge = (submission: any) => {
     if (submission.grade) {
-      return <Badge variant="default" className="bg-green-600">Graded</Badge>;
+      return <Badge variant="default" className="bg-[hsl(var(--success))]">Graded</Badge>;
     }
 
     if (submission.status === "late") {
@@ -280,7 +280,7 @@ const SubmissionsList: React.FC = () => {
                           <span className="text-2xl font-bold text-primary">
                             {submission.grade.pointsEarned} points
                           </span>
-                          <CheckCircle className="h-5 w-5 text-green-600" />
+                          <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
                         </div>
                         {submission.grade.feedback && (
                           <div>

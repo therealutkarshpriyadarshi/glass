@@ -41,7 +41,7 @@ const AssignmentOverview: React.FC<AssignmentOverviewProps> = ({
 
     const threeDays = 3 * 24 * 60 * 60 * 1000;
     if (dueDate.getTime() - now.getTime() < threeDays) {
-      return <Badge variant="default" className="bg-orange-500">Due Soon</Badge>;
+      return <Badge variant="default" className="bg-warning">Due Soon</Badge>;
     }
 
     return <Badge variant="default">Active</Badge>;

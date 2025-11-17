@@ -96,21 +96,21 @@ const UserCourses: React.FC = () => {
                 <div className="flex flex-wrap gap-2">
                   <Badge
                     variant="secondary"
-                    className="flex items-center gap-1 bg-blue-500/10 text-blue-400 border-blue-500/20"
+                    className="flex items-center gap-1 bg-primary/10 text-primary border-primary/20"
                   >
                     <BookOpen className="h-3 w-3" />
                     {course.category}
                   </Badge>
                   <Badge
                     variant="secondary"
-                    className="flex items-center gap-1 bg-green-500/10 text-green-400 border-green-500/20"
+                    className="flex items-center gap-1 bg-accent/10 text-accent border-accent/20"
                   >
                     <Calendar className="h-3 w-3" />
                     {course.startDate} - {course.endDate}
                   </Badge>
                   <Badge
                     variant="secondary"
-                    className="flex items-center gap-1 bg-orange-500/10 text-orange-400 border-orange-500/20"
+                    className="flex items-center gap-1 bg-secondary/10 text-secondary border-secondary/20"
                   >
                     <Users className="h-3 w-3" />
                     {course.maxStudents} students max

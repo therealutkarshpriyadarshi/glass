@@ -8,7 +8,7 @@ const NotFound: React.FC = () => {
       <h1
         className="text-[8rem] font-bold relative animate-pulse"
         style={{
-          textShadow: '0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff, 0.025em 0.05em 0 #fffc00'
+          textShadow: '0.05em 0 0 hsl(var(--accent)), -0.05em -0.025em 0 hsl(var(--secondary)), 0.025em 0.05em 0 hsl(var(--warning))'
         }}
       >
         404
