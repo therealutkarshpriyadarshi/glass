@@ -64,7 +64,7 @@ const JoinCourse: React.FC<JoinCourseProps> = ({ open, onOpenChange }) => {
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-green-600">
+            <DialogTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
               <CheckCircle className="h-5 w-5" />
               Request Sent Successfully!
             </DialogTitle>

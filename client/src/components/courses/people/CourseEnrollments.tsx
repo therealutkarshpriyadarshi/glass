@@ -58,11 +58,11 @@ const CourseEnrollments: React.FC = () => {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case "teacher":
-        return "bg-blue-500/10 text-blue-400 border-blue-500/20";
+        return "bg-primary/10 text-primary border-primary/20";
       case "admin":
-        return "bg-purple-500/10 text-purple-400 border-purple-500/20";
+        return "bg-secondary/10 text-secondary border-secondary/20";
       default:
-        return "bg-green-500/10 text-green-400 border-green-500/20";
+        return "bg-accent/10 text-accent border-accent/20";
     }
   };
 
@@ -156,7 +156,7 @@ const CourseEnrollments: React.FC = () => {
                       className="flex items-center gap-4 p-3 rounded-lg border border-border bg-card"
                     >
                       <Avatar>
-                        <AvatarFallback className="bg-orange-500/10 text-orange-400">
+                        <AvatarFallback className="bg-warning/10 text-warning">
                           {getInitials(
                             enrollment.user?.firstName,
                             enrollment.user?.lastName
@@ -178,7 +178,7 @@ const CourseEnrollments: React.FC = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="gap-2 text-green-600 border-green-600/20 hover:bg-green-600/10"
+                          className="gap-2 text-[hsl(var(--success))] border-[hsl(var(--success))]/20 hover:bg-[hsl(var(--success))]/10"
                           onClick={() => handleApprove(enrollment.id)}
                           disabled={loading}
                         >
@@ -188,7 +188,7 @@ const CourseEnrollments: React.FC = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="gap-2 text-red-600 border-red-600/20 hover:bg-red-600/10"
+                          className="gap-2 text-destructive border-destructive/20 hover:bg-destructive/10"
                           onClick={() => handleReject(enrollment.id)}
                           disabled={loading}
                         >

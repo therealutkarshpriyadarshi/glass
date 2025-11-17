@@ -84,10 +84,10 @@ const Description: React.FC<DescriptionProps> = ({ editorRef, ...props }) => {
           max-width: 1200px;
           height: 500px;
           margin: 0 auto;
-          border: 1px solid #e0e0e0;
+          border: 1px solid hsl(var(--border));
           border-radius: 8px;
           overflow: hidden;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px hsl(var(--background) / 0.3);
         }
         .editor-wrapper {
           height: 100%;
@@ -105,8 +105,8 @@ const Description: React.FC<DescriptionProps> = ({ editorRef, ...props }) => {
           flex-direction: column;
         }
         :global(.custom-editor .toolbar) {
-          background-color: #f5f5f5;
-          border-bottom: 1px solid #e0e0e0;
+          background-color: hsl(var(--muted));
+          border-bottom: 1px solid hsl(var(--border));
           padding: 8px;
           flex-shrink: 0;
         }
@@ -114,6 +114,8 @@ const Description: React.FC<DescriptionProps> = ({ editorRef, ...props }) => {
           flex-grow: 1;
           overflow-y: auto;
           padding: 16px;
+          background-color: hsl(var(--card));
+          color: hsl(var(--card-foreground));
         }
         :global(.custom-editor .prose-lg) {
           font-size: 16px;
@@ -122,14 +124,16 @@ const Description: React.FC<DescriptionProps> = ({ editorRef, ...props }) => {
         :global(.custom-editor .toolbar button) {
           margin-right: 8px;
           padding: 4px 8px;
-          background-color: #ffffff;
-          border: 1px solid #d0d0d0;
+          background-color: hsl(var(--card));
+          border: 1px solid hsl(var(--border));
           border-radius: 4px;
           cursor: pointer;
           transition: background-color 0.2s ease;
+          color: hsl(var(--foreground));
         }
         :global(.custom-editor .toolbar button:hover) {
-          background-color: #f0f0f0;
+          background-color: hsl(var(--accent));
+          color: hsl(var(--accent-foreground));
         }
       `}</style>
     </div>

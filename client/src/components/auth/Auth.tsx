@@ -76,10 +76,10 @@ const Auth: React.FC = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-2"
+                  className="mt-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 flex items-start gap-2"
                 >
-                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-500/90">{error}</p>
+                  <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-destructive/90">{error}</p>
                 </motion.div>
               )}
             </CardContent>

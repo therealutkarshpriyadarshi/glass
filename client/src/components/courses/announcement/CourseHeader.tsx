@@ -24,7 +24,7 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({ title }) => {
 
   return (
     <div className="relative w-full h-[200px] p-0 overflow-hidden rounded-3xl">
-      <h2 className="absolute top-4 left-4 z-10 text-3xl font-bold text-yellow-300 cursor-pointer">
+      <h2 className="absolute top-4 left-4 z-10 text-3xl font-bold text-warning cursor-pointer">
         {title}
       </h2>
       <img

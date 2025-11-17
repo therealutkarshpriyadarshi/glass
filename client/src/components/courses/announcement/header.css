@@ -4,11 +4,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));  
+  background: linear-gradient(to right, hsl(var(--background)), hsl(var(--background) / 0.4));
 }
 
 .title {
-  color: white;
+  color: hsl(var(--foreground));
   position: absolute;
   top: 50%;
   left: 15%;
