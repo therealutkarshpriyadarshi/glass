@@ -22,7 +22,7 @@ type Submission struct {
 	UserID       uint             `json:"userId" gorm:"not null"`
 	User         User             `json:"-" gorm:"foreignkey:UserID"`
 	SubmittedAt  time.Time        `json:"submittedAt" gorm:"not null"`
-	Files        []SubmissionFile `json:"files" gorm:"foreignKey:SubmissionID"`
+	Files        []SubmissionFile `json:"files" gorm:"foreignKey:SubmissionId"`
 	Status       SubmissionStatus `json:"status" gorm:"not null"`
 	Grade        *Grade           `json:"grade" gorm:"foreignKey:SubmissionID"`
 }

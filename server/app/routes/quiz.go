@@ -23,10 +23,10 @@ func SetupQuizRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 		quizRoutes.GET("/:id", quizHandler.GetQuiz)
 
 		// Update quiz (only creator can update)
-		quizRoutes.PUT("/:id", middlewares.QuizCreatorMiddleware(db), quizHandler.UpdateQuiz)
+		quizRoutes.PUT("/:id", middlewares.QuizCreatorMiddleware(quizService), quizHandler.UpdateQuiz)
 
 		// Delete quiz (only creator can delete)
-		quizRoutes.DELETE("/:id", middlewares.QuizCreatorMiddleware(db), quizHandler.DeleteQuiz)
+		quizRoutes.DELETE("/:id", middlewares.QuizCreatorMiddleware(quizService), quizHandler.DeleteQuiz)
 
 		// Get quizzes by course (enrolled users can view)
 		quizRoutes.GET("/course/:courseId", quizHandler.GetQuizzesByCourse)
@@ -40,7 +40,7 @@ func SetupQuizRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 		quizRoutes.GET("/attempts/:submissionId/results", quizHandler.GetQuizResults)
 
 		// Get analytics (only creator can view analytics)
-		quizRoutes.GET("/:id/analytics", middlewares.QuizCreatorMiddleware(db), quizHandler.GetQuizAnalytics)
+		quizRoutes.GET("/:id/analytics", middlewares.QuizCreatorMiddleware(quizService), quizHandler.GetQuizAnalytics)
 
 		// Get user's submissions for a quiz
 		quizRoutes.GET("/:id/submissions", quizHandler.GetUserSubmissions)
