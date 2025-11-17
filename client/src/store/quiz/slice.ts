@@ -16,10 +16,22 @@ export const fetchQuizById = createAsyncThunk(
   }
 );
 
+export const fetchQuizzesByCourse = createAsyncThunk(
+  "quizzes/fetchQuizzesByCourse",
+  async (courseId: number) => {
+    const response = await apiCall<{ quizzes: Quiz[] }>({
+      url: `/quizzes/course/${courseId}`,
+      method: "GET"
+    });
+    return response.quizzes;
+  }
+);
+
 export const createQuiz = createAsyncThunk(
   "quizzes/createQuiz",
   async (quiz: Omit<Quiz, "id">) => {
-    return await apiCall<Quiz>({ url: "/quizzes", method: "POST", data: quiz });
+    const response = await apiCall<{ quiz: Quiz }>({ url: "/quizzes", method: "POST", data: quiz });
+    return response.quiz;
   }
 );
 
@@ -79,15 +91,19 @@ export const deleteQuestion = createAsyncThunk(
 );
 
 interface QuizState {
+  list: Quiz[];
   quizzes: Quiz[];
   currentQuiz: Quiz | null;
+  loading: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: QuizState = {
+  list: [],
   quizzes: [],
   currentQuiz: null,
+  loading: false,
   isLoading: false,
   error: null,
 };
@@ -118,8 +134,23 @@ const quizSlice = createSlice({
           state.currentQuiz = action.payload;
         }
       )
+      .addCase(fetchQuizzesByCourse.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        fetchQuizzesByCourse.fulfilled,
+        (state, action: PayloadAction<Quiz[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        }
+      )
+      .addCase(fetchQuizzesByCourse.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch quizzes";
+      })
       .addCase(createQuiz.fulfilled, (state, action: PayloadAction<Quiz>) => {
         state.quizzes.push(action.payload);
+        state.list.push(action.payload);
       })
       .addCase(updateQuiz.fulfilled, (state, action: PayloadAction<Quiz>) => {
         const index = state.quizzes.findIndex(

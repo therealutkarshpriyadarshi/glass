@@ -11,6 +11,10 @@ import AssignmentDetail from "./components/courses/assignment/AssignmentDetail";
 import SubmitAssignment from "./components/courses/assignment/SubmitAssignment";
 import SubmissionsList from "./components/courses/assignment/SubmissionsList";
 import GradesList from "./components/student/grades/GradesList";
+import QuizDetail from "./components/courses/quiz/QuizDetail";
+import TakeQuiz from "./components/student/quiz/TakeQuiz";
+import QuizResults from "./components/student/quiz/QuizResults";
+import QuizAnalytics from "./components/courses/quiz/QuizAnalytics";
 import SuspenseWrapper from "./SuspenseWrapper";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
@@ -105,6 +109,46 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <SuspenseWrapper>
               <GradesList />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/quizzes/:quizId",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <QuizDetail />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/quizzes/:quizId/take",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <TakeQuiz />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/quizzes/:quizId/results",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <QuizResults />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/courses/:courseId/quizzes/:quizId/analytics",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <QuizAnalytics />
             </SuspenseWrapper>
           </ProtectedRoute>
         ),
