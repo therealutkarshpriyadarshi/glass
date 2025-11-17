@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { createAssignment } from "@/store/assignments/api";
+import { toast } from "@/components/ui/use-toast";
 import Description from "./components/Description";
 import FileUpload from "./components/FileUpload";
 import CourseDropdown from "./components/CourseDropdown";
@@ -17,6 +21,10 @@ import { DatePicker } from "@/components/ui/date-picker";
  * @returns {JSX.Element} Rendered CreateAssignment component
  */
 const CreateAssignment: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.assignments);
+
   const [title, setTitle] = useState("");
   const [markdown, setMarkdown] = useState("");
   const [course, setCourse] = useState("");
@@ -30,24 +38,44 @@ const CreateAssignment: React.FC = (): JSX.Element => {
     if (!title) newErrors.title = "Please input the title!";
     if (!markdown) newErrors.description = "Please input the description!";
     if (!course) newErrors.course = "Please select a course!";
-    if (!startDate || !endDate)
-      newErrors.dateRange = "Please select the date/time range!";
+    if (!endDate)
+      newErrors.dateRange = "Please select the due date!";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      const values = {
-        title,
-        description: markdown,
-        course,
-        dateRange: [startDate, endDate],
-        files,
-      };
-      console.log("Form values:", values);
-      // Handle form submission
+      try {
+        // Create form data for file upload support
+        const formData = new FormData();
+        formData.append('courseId', course);
+        formData.append('title', title);
+        formData.append('instructions', markdown);
+        formData.append('dueDate', endDate!.toISOString());
+
+        // Add files if any
+        files.forEach(file => {
+          formData.append('files', file);
+        });
+
+        await dispatch(createAssignment(formData)).unwrap();
+
+        toast({
+          title: "Success",
+          description: "Assignment created successfully",
+        });
+
+        // Navigate back to the course page
+        navigate(`/courses/${course}`);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to create assignment",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -143,7 +171,9 @@ const CreateAssignment: React.FC = (): JSX.Element => {
       </div>
 
       <div className="mt-6">
-        <Button type="submit">Create Assignment</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Assignment"}
+        </Button>
       </div>
     </form>
   );
