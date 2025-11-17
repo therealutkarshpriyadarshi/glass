@@ -11,6 +11,7 @@ import quizReducer from "./quiz/slice";
 import enrollmentsReducer from "./enrollments/slice";
 import submissionsReducer from "./submissions/slice";
 import gradesReducer from "./grades/slice";
+import notificationsReducer from "./notifications";
 
 const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
     enrollments: enrollmentsReducer,
     submissions: submissionsReducer,
     grades: gradesReducer,
+    notifications: notificationsReducer,
   },
 });
 

@@ -79,6 +79,7 @@ func main() {
 		routes.SetupMaterialRoutes(api, db, cs, secret)
 	}
 	routes.SetupQuizRoutes(api, db, secret)
+	routes.SetupNotificationRoutes(api, db, secret)
 
 	// Start server
 	port := os.Getenv("PORT")

@@ -10,11 +10,15 @@ import (
 )
 
 type EnrollmentHandler struct {
-	serv *services.EnrollmentService
+	serv         *services.EnrollmentService
+	notifService *services.NotificationService
 }
 
-func NewEnrollmentHandler(serv *services.EnrollmentService) *EnrollmentHandler {
-	return &EnrollmentHandler{serv: serv}
+func NewEnrollmentHandler(serv *services.EnrollmentService, notifService *services.NotificationService) *EnrollmentHandler {
+	return &EnrollmentHandler{
+		serv:         serv,
+		notifService: notifService,
+	}
 }
 
 // EnrollToCourse handles the approval of a pending enrollment request.
@@ -42,6 +46,16 @@ func (h *EnrollmentHandler) EnrollToCourse(c *gin.Context) {
 	if err := h.serv.ApproveEnrolment(adminId, uint(enrollId)); err != nil {
 		SendError(err, c)
 		return
+	}
+
+	// Send notification to the user
+	enrollment, err := h.serv.GetEnrollmentByID(uint(enrollId))
+	if err == nil {
+		_ = h.notifService.NotifyEnrollmentApproved(
+			enrollment.UserID,
+			enrollment.Course.Name,
+			enrollment.CourseID,
+		)
 	}
 
 	HandleOk(c, "Enrollment approved")
@@ -72,6 +86,16 @@ func (h *EnrollmentHandler) RejectEnrollment(c *gin.Context) {
 	if err := h.serv.RejectEnrolment(adminId, uint(enrollID)); err != nil {
 		SendError(err, c)
 		return
+	}
+
+	// Send notification to the user
+	enrollment, err := h.serv.GetEnrollmentByID(uint(enrollID))
+	if err == nil {
+		_ = h.notifService.NotifyEnrollmentRejected(
+			enrollment.UserID,
+			enrollment.Course.Name,
+			enrollment.CourseID,
+		)
 	}
 
 	HandleOk(c, "Enrollment rejected")

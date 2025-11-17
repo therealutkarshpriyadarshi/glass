@@ -48,6 +48,7 @@ func InitDB() *gorm.DB {
 		&models.MaterialFile{},
 		&models.SubmissionFile{},
 		&models.AssignmentFile{},
+		&models.Notification{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to auto migrate models: %v", err)

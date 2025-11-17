@@ -10,11 +10,15 @@ import (
 
 // GradeHandler handles HTTP requests related to grading operations.
 type GradeHandler struct {
-	serv *services.GradeService
+	serv         *services.GradeService
+	notifService *services.NotificationService
 }
 
-func NewGradeHandler(serv *services.GradeService) *GradeHandler {
-	return &GradeHandler{serv: serv}
+func NewGradeHandler(serv *services.GradeService, notifService *services.NotificationService) *GradeHandler {
+	return &GradeHandler{
+		serv:         serv,
+		notifService: notifService,
+	}
 }
 
 // Create handles the creation of a new grade for a submission.
@@ -38,6 +42,16 @@ func (h *GradeHandler) Create(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create grade"})
 		return
+	}
+
+	// Send notification to student (fetch grade with preloaded data)
+	gradeWithData, err := h.serv.Get(grade.ID)
+	if err == nil && gradeWithData.Submission.Assignment.Title != "" {
+		_ = h.notifService.NotifySubmissionGraded(
+			gradeWithData.Submission.UserID,
+			gradeWithData.Submission.Assignment.Title,
+			gradeWithData.SubmissionID,
+		)
 	}
 
 	c.JSON(http.StatusCreated, grade)

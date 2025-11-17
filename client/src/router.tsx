@@ -15,6 +15,8 @@ import QuizDetail from "./components/courses/quiz/QuizDetail";
 import TakeQuiz from "./components/student/quiz/TakeQuiz";
 import QuizResults from "./components/student/quiz/QuizResults";
 import QuizAnalytics from "./components/courses/quiz/QuizAnalytics";
+import ProfilePage from "./components/profile/ProfilePage";
+import SettingsPage from "./components/settings/SettingsPage";
 import SuspenseWrapper from "./SuspenseWrapper";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
@@ -149,6 +151,26 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <SuspenseWrapper>
               <QuizAnalytics />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <ProfilePage />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/settings",
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <SettingsPage />
             </SuspenseWrapper>
           </ProtectedRoute>
         ),

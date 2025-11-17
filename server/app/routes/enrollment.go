@@ -10,7 +10,8 @@ import (
 
 func SetupEnrollmentRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	enrollmentService := services.NewEnrollmentService(db)
-	enrollmentHandler := handlers.NewEnrollmentHandler(enrollmentService)
+	notificationService := services.NewNotificationService(db)
+	enrollmentHandler := handlers.NewEnrollmentHandler(enrollmentService, notificationService)
 
 	enrollmentRoutes := r.Group("/enrollments")
 	enrollmentRoutes.Use(middlewares.AuthMiddleware(secret))

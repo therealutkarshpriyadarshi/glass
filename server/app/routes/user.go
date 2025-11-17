@@ -34,6 +34,9 @@ func SetUpUserRoutes(r gin.IRouter, db *gorm.DB, secret []byte, expiration time.
 		router.DELETE("/profile",
 			middlewares.AuthMiddleware(secretString),
 			handler.DeleteUser)
+		router.POST("/password/change",
+			middlewares.AuthMiddleware(secretString),
+			handler.ChangePassword)
 
 		// Course-related endpoints
 		router.GET("/courses",

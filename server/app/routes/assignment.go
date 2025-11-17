@@ -10,7 +10,8 @@ import (
 
 func SetupAssignmentRoutes(r gin.IRouter, db *gorm.DB, secret string) {
 	assignmentService := services.NewAssignmentService(db)
-	assignmentHandler := handlers.NewAssignmentHandler(assignmentService)
+	notificationService := services.NewNotificationService(db)
+	assignmentHandler := handlers.NewAssignmentHandler(assignmentService, notificationService)
 
 	assignments := r.Group("/assignments")
 	assignments.Use(middlewares.AuthMiddleware(secret))
