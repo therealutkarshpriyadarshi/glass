@@ -6,10 +6,12 @@ import {
   MessageSquare,
   Calendar as CalendarIcon,
   Download,
+  GraduationCap,
 } from "lucide-react";
 import Announcement from "./announcement/Announcement";
 import CoursePeople from "./people/CoursePeople";
 import FilesView from "./files/FilesView";
+import QuizList from "./quiz/QuizList";
 import AddDropDown from "./AddDropDown";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -38,14 +40,18 @@ const CourseOverview: React.FC = () => {
                   People
                 </TabsTrigger>
                 <TabsTrigger value="4" className="gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  Quizzes
+                </TabsTrigger>
+                <TabsTrigger value="5" className="gap-2">
                   <MessageSquare className="h-4 w-4" />
                   Chat
                 </TabsTrigger>
-                <TabsTrigger value="5" className="gap-2">
+                <TabsTrigger value="6" className="gap-2">
                   <CalendarIcon className="h-4 w-4" />
                   Calendar
                 </TabsTrigger>
-                <TabsTrigger value="6" className="gap-2">
+                <TabsTrigger value="7" className="gap-2">
                   <Download className="h-4 w-4" />
                   Submissions
                 </TabsTrigger>
@@ -64,12 +70,15 @@ const CourseOverview: React.FC = () => {
             <CoursePeople />
           </TabsContent>
           <TabsContent value="4">
-            {/* Chat content */}
+            <QuizList />
           </TabsContent>
           <TabsContent value="5">
-            {/* Calendar content */}
+            {/* Chat content */}
           </TabsContent>
           <TabsContent value="6">
+            {/* Calendar content */}
+          </TabsContent>
+          <TabsContent value="7">
             {/* Submissions content */}
           </TabsContent>
         </Tabs>
